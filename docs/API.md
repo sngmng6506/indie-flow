@@ -69,7 +69,6 @@
   "title": "달빛정거장 단독공연",
   "venue": {"id": "ven_12", "name": "작은방 라이브홀", "address": "[도로명 주소] 지하 1층", "lat": 37.0, "lng": 126.0},
   "firstTimerFriendly": true,
-  "firstTimerGuide": {"entrance": "...", "entry": "...", "seating": "스탠딩", "drink": "1잔 주문", "solo": true},
   "doorPrice": 25000,
   "advancePrice": 22000,
   "ticketUrl": "https://...",
@@ -78,8 +77,6 @@
   "checkedAt": "2026-11-08T19:40:00+09:00"
 }
 ```
-
-`firstTimerGuide`의 값은 공연장이 확인한 항목만 담는다. 확인되지 않은 항목은 `null`이고, 화면에서는 그 줄을 숨긴다.
 
 ### 오류
 

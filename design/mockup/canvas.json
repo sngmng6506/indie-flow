@@ -6,7 +6,7 @@
   "pages": [],
   "boards": {
     "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 1360, "title": "오늘 근처 목록", "is_interactive": true },
-    "Detail.dc.html": { "x": 470, "y": 0, "w": 390, "h": 1220, "title": "공연 상세", "is_interactive": true }
+    "Detail.dc.html": { "x": 470, "y": 0, "w": 390, "h": 980, "title": "공연 상세", "is_interactive": true }
   },
   "order": ["Main.dc.html", "Detail.dc.html"],
   "notes": {
@@ -21,7 +21,7 @@
       "x": 940,
       "y": 0,
       "w": 260,
-      "text": "공연명, 공연장, 가격, 입구 안내는 모두 예시입니다. 입구 위치, 음료 주문, 혼자 가도 되는지는 공연장마다 달라서 실제로는 공연장 확인 후 채웁니다."
+      "text": "공연명, 공연장, 가격은 모두 예시입니다."
     }
   },
   "designSystems": []
