@@ -16,7 +16,8 @@
 
 | 필드 | 형식 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| `when` | `now` / `tonight` / `weekend` | 아니요 | 기본 `now` (지금 갈 수 있는 공연) |
+| `when` | `now` / `tonight` / `date` | 아니요 | 기본 `now` (지금 갈 수 있는 공연). `date`는 공연 달력용 |
+| `date` | `YYYY-MM-DD` | `when=date`일 때 예 | 그날 공연 전체를 시간순으로 돌려준다. 끝난 공연은 `ended: true` |
 | `cafe` | string | 아니요 | QR의 카페 코드. 있으면 그 카페 기준 거리와 정렬 |
 | `lat`, `lng` | number | 아니요 | 카페 코드가 없을 때 쓰는 기준 좌표 |
 
@@ -53,6 +54,33 @@
 | `400 Bad Request` | `INVALID_LOCATION` | 좌표 범위가 홍대 서비스 지역을 벗어남 |
 | `404 Not Found` | `CAFE_NOT_FOUND` | 카페 코드가 없음 |
 
+## GET /api/calendar
+
+공연 달력의 날짜 띠에 쓸 날짜별 공연 수를 돌려준다.
+
+### 요청 (쿼리)
+
+| 필드 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `from` | `YYYY-MM-DD` | 예 | 시작 날짜 |
+| `days` | 정수 (1~31) | 아니요 | 기본 7 |
+| `firstTimerOnly` | boolean | 아니요 | 처음 가기 좋은 공연만 셀지 |
+
+### 성공
+
+- HTTP 상태: `200 OK`
+
+```json
+{"days": [{"date": "2026-11-08", "count": 6}, {"date": "2026-11-09", "count": 2}]}
+```
+
+### 오류
+
+| HTTP 상태 | 코드 | 상황 |
+| --- | --- | --- |
+| `400 Bad Request` | `INVALID_DATE` | 날짜 형식이 틀림 |
+| `400 Bad Request` | `INVALID_RANGE` | `days`가 1~31을 벗어남 |
+
 ## GET /api/events/{id}
 
 공연 상세를 돌려준다.
@@ -74,9 +102,14 @@
   "ticketUrl": "https://...",
   "lineup": [{"name": "달빛정거장", "summary": "...", "previewUrl": "https://..."}],
   "poster": null,
+  "ticketStatus": "available",
+  "source": {"name": "작은방 라이브홀 인스타그램", "url": "https://..."},
+  "nextAtVenue": [{"id": "evt_130", "startsAt": "2026-11-12T20:00:00+09:00", "title": "새벽빛 밴드"}],
   "checkedAt": "2026-11-08T19:40:00+09:00"
 }
 ```
+
+`ticketStatus`는 `available` / `sold_out` / `door_only`(현장 판매만) 중 하나다. `source`는 정보를 가져온 원본 게시물이다.
 
 ### 오류
 

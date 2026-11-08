@@ -30,15 +30,15 @@
       "x": 1280,
       "y": 0,
       "w": 390,
-      "h": 1400,
-      "title": "오늘 근처 목록 · 흑백안 (확정)",
+      "h": 1580,
+      "title": "지금 근처 · 흑백안 (확정)",
       "is_interactive": true
     },
     "DetailBW.dc.html": {
       "x": 1750,
       "y": 0,
       "w": 390,
-      "h": 900,
+      "h": 1180,
       "title": "공연 상세 · 흑백안 (확정)",
       "is_interactive": true
     },
@@ -49,6 +49,38 @@
       "h": 1560,
       "title": "제목 글꼴 후보 · C(Hahmlet) 선택",
       "is_interactive": false
+    },
+    "CalendarBW.dc.html": {
+      "x": 1280,
+      "y": 1720,
+      "w": 390,
+      "h": 1100,
+      "title": "공연 달력",
+      "is_interactive": true
+    },
+    "NoLocBW.dc.html": {
+      "x": 1750,
+      "y": 1720,
+      "w": 390,
+      "h": 1080,
+      "title": "위치 모를 때 (검색·SNS로 들어옴)",
+      "is_interactive": true
+    },
+    "EmptyBW.dc.html": {
+      "x": 2220,
+      "y": 1720,
+      "w": 390,
+      "h": 700,
+      "title": "지금 갈 공연이 없을 때",
+      "is_interactive": true
+    },
+    "StatesBW.dc.html": {
+      "x": 2690,
+      "y": 1720,
+      "w": 390,
+      "h": 840,
+      "title": "카드 상태: 매진 · 현장 판매만 · 시작함",
+      "is_interactive": true
     }
   },
   "order": [
@@ -56,7 +88,11 @@
     "Detail.dc.html",
     "MainBW.dc.html",
     "DetailBW.dc.html",
-    "FontsBW.dc.html"
+    "FontsBW.dc.html",
+    "CalendarBW.dc.html",
+    "NoLocBW.dc.html",
+    "EmptyBW.dc.html",
+    "StatesBW.dc.html"
   ],
   "notes": {
     "title": {
@@ -83,6 +119,12 @@
       "y": -120,
       "w": 860,
       "text": "흑백안으로 확정했습니다. 복사 전단지처럼 종이 질감, 망점 포스터 칸, 테이프, 도장 배지, 2px 검정 테두리를 쓰고, 강조색 없이 검정 채움이 주요 행동입니다. 제목 글꼴은 Hahmlet Bold, 본문은 Noto Sans KR입니다."
+    },
+    "row2": {
+      "x": 1280,
+      "y": 1600,
+      "w": 1800,
+      "text": "흑백안 추가 화면: 공연 달력(날짜별로 모두 보기), 위치를 모를 때, 공연이 없을 때, 카드 상태. 지금 근처와 공연 달력은 위쪽 탭으로 오갑니다."
     }
   },
   "designSystems": []
