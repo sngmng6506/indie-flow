@@ -15,7 +15,7 @@
       "y": 0,
       "w": 390,
       "h": 1360,
-      "title": "오늘 근처 목록",
+      "title": "오늘 근처 목록 · 이전 컬러안",
       "is_interactive": true
     },
     "Detail.dc.html": {
@@ -23,7 +23,7 @@
       "y": 0,
       "w": 390,
       "h": 980,
-      "title": "공연 상세",
+      "title": "공연 상세 · 이전 컬러안",
       "is_interactive": true
     },
     "MainBW.dc.html": {
@@ -31,7 +31,7 @@
       "y": 0,
       "w": 390,
       "h": 1400,
-      "title": "오늘 근처 목록 · 흑백안",
+      "title": "오늘 근처 목록 · 흑백안 (확정)",
       "is_interactive": true
     },
     "DetailBW.dc.html": {
@@ -39,7 +39,7 @@
       "y": 0,
       "w": 390,
       "h": 900,
-      "title": "공연 상세 · 흑백안",
+      "title": "공연 상세 · 흑백안 (확정)",
       "is_interactive": true
     },
     "FontsBW.dc.html": {
@@ -47,7 +47,7 @@
       "y": 0,
       "w": 860,
       "h": 1560,
-      "title": "흑백안 · 제목 글꼴 후보",
+      "title": "제목 글꼴 후보 · C(Hahmlet) 선택",
       "is_interactive": false
     }
   },
@@ -82,7 +82,7 @@
       "x": 1280,
       "y": -120,
       "w": 860,
-      "text": "흑백 거친 느낌 안: 복사 전단지처럼 종이 질감(노이즈), 망점 포스터 칸, 테이프, 도장 배지, 2px 검정 테두리를 썼습니다. 강조색 없이 검정 채움이 주요 행동입니다."
+      "text": "흑백안으로 확정했습니다. 복사 전단지처럼 종이 질감, 망점 포스터 칸, 테이프, 도장 배지, 2px 검정 테두리를 쓰고, 강조색 없이 검정 채움이 주요 행동입니다. 제목 글꼴은 Hahmlet Bold, 본문은 Noto Sans KR입니다."
     }
   },
   "designSystems": []
