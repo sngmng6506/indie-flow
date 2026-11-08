@@ -1,16 +1,62 @@
 {
   "v": 3,
-  "createdOnFiles": { "v": 1, "at": "2026-11-08T10:56:00Z" },
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-08T10:56:00Z"
+  },
   "title": "홍대플로우 모바일 목업",
-  "launch": { "view": "canvas" },
+  "launch": {
+    "view": "canvas"
+  },
   "pages": [],
   "boards": {
-    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 1360, "title": "오늘 근처 목록", "is_interactive": true },
-    "Detail.dc.html": { "x": 470, "y": 0, "w": 390, "h": 980, "title": "공연 상세", "is_interactive": true }
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 1360,
+      "title": "오늘 근처 목록",
+      "is_interactive": true
+    },
+    "Detail.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 980,
+      "title": "공연 상세",
+      "is_interactive": true
+    },
+    "MainBW.dc.html": {
+      "x": 1280,
+      "y": 0,
+      "w": 390,
+      "h": 1400,
+      "title": "오늘 근처 목록 · 흑백안",
+      "is_interactive": true
+    },
+    "DetailBW.dc.html": {
+      "x": 1750,
+      "y": 0,
+      "w": 390,
+      "h": 900,
+      "title": "공연 상세 · 흑백안",
+      "is_interactive": true
+    }
   },
-  "order": ["Main.dc.html", "Detail.dc.html"],
+  "order": [
+    "Main.dc.html",
+    "Detail.dc.html",
+    "MainBW.dc.html",
+    "DetailBW.dc.html"
+  ],
   "notes": {
-    "title": { "x": 0, "y": -280, "text": "홍대플로우 모바일 목업", "kind": "title1", "maxW": 860 },
+    "title": {
+      "x": 0,
+      "y": -280,
+      "text": "홍대플로우 모바일 목업",
+      "kind": "title1",
+      "maxW": 860
+    },
     "states": {
       "x": 940,
       "y": 220,
@@ -22,6 +68,12 @@
       "y": 0,
       "w": 260,
       "text": "공연명, 공연장, 가격은 모두 예시입니다."
+    },
+    "bw": {
+      "x": 1280,
+      "y": -120,
+      "w": 860,
+      "text": "흑백 거친 느낌 안: 복사 전단지처럼 종이 질감(노이즈), 망점 포스터 칸, 테이프, 도장 배지, 2px 검정 테두리를 썼습니다. 강조색 없이 검정 채움이 주요 행동입니다."
     }
   },
   "designSystems": []
