@@ -9,6 +9,7 @@
 | `docs/DESIGN_SYSTEM.md` | 색상·글꼴·간격·컴포넌트 기준 |
 | `docs/API.md` | API 명세 (요청·응답·오류) |
 | `docs/ADR.md` | 장기적으로 지킬 설계 결정과 근거 |
+| `docs/CRAWL_SOURCES.md` | 공연 정보 수집 항목, 출처 우선순위, 공연장 목록과 수집 주기 |
 | `design/mockup/` | 모바일 목업 원본. `*BW.dc.html`이 확정된 흑백안, 나머지는 이전 컬러안 |
 | `design/tools/gen_bw.py` | 흑백안 목업 생성 스크립트. 목업을 고칠 때는 이 스크립트를 고치고 다시 생성한다 |
 
