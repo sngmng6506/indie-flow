@@ -10,16 +10,18 @@
 
 ## GET /api/events
 
-오늘 근처 공연 목록을 시작 시간 순으로 돌려준다. 4시간 안에 시작하는 공연이 먼저, 그다음 가까운 순이다.
+고른 날의 공연 목록을 시작 시간 순으로 돌려준다. 이미 끝난 공연은 빼고, 출발 위치에서의 도보 시간을 함께 준다.
 
 ### 요청 (쿼리)
 
 | 필드 | 형식 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| `when` | `now` / `tonight` / `date` | 아니요 | 기본 `now` (지금 갈 수 있는 공연). `date`는 공연 달력용 |
-| `date` | `YYYY-MM-DD` | `when=date`일 때 예 | 그날 공연 전체를 시간순으로 돌려준다. 끝난 공연은 `ended: true` |
-| `cafe` | string | 아니요 | QR의 카페 코드. 있으면 그 카페 기준 거리와 정렬 |
-| `lat`, `lng` | number | 아니요 | 카페 코드가 없을 때 쓰는 기준 좌표 |
+| `date` | `YYYY-MM-DD` | 아니요 | 기본은 오늘 |
+| `cafe` | string | 아니요 | QR의 카페 코드. 있으면 그 카페가 출발 위치 |
+| `lat`, `lng` | number | 아니요 | 사용자가 허락한 내 위치. 카페 코드가 없을 때만 쓴다 |
+| `walk` | `10` / `15` / `20` / `30` / `all` | 아니요 | 걷는 시간 상한(분). 기본 15. `all`이면 거리 상관없이 전체 |
+
+출발 위치는 카페, 내 위치, 홍대입구역 순으로 정한다. 좌표가 없거나 홍대 일대 밖이면 홍대입구역을 쓴다. 응답의 `origin`에 실제로 쓴 출발 위치를, `fartherCount`에 걷는 시간 상한 밖의 공연 수를 담는다.
 
 ### 성공
 
@@ -27,7 +29,8 @@
 
 ```json
 {
-  "checkedAt": "2026-11-08T19:40:00+09:00",
+  "origin": {"type": "station", "name": "홍대입구역"},
+  "fartherCount": 2,
   "events": [
     {
       "id": "evt_123",
@@ -49,8 +52,8 @@
 
 | HTTP 상태 | 코드 | 상황 |
 | --- | --- | --- |
-| `400 Bad Request` | `INVALID_WHEN` | `when`이 허용 값이 아님 |
-| `400 Bad Request` | `INVALID_LOCATION` | 좌표 범위가 홍대 서비스 지역을 벗어남 |
+| `400 Bad Request` | `INVALID_DATE` | 날짜 형식이 틀림 |
+| `400 Bad Request` | `INVALID_WALK` | `walk`가 허용 값이 아님 |
 | `404 Not Found` | `CAFE_NOT_FOUND` | 카페 코드가 없음 |
 
 ## GET /api/calendar
@@ -99,14 +102,12 @@
   "ticketUrl": "https://...",
   "lineup": [{"name": "달빛정거장", "summary": "...", "previewUrl": "https://..."}],
   "poster": null,
-  "ticketStatus": "available",
   "source": {"name": "작은방 라이브홀 인스타그램", "url": "https://..."},
-  "nextAtVenue": [{"id": "evt_130", "startsAt": "2026-11-12T20:00:00+09:00", "title": "새벽빛 밴드"}],
   "checkedAt": "2026-11-08T19:40:00+09:00"
 }
 ```
 
-`ticketStatus`는 `available` / `sold_out` / `door_only`(현장 판매만) 중 하나다. `source`는 정보를 가져온 원본 게시물이다.
+`source`는 정보를 가져온 원본 게시물이다.
 
 ### 오류
 
