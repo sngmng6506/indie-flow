@@ -17,7 +17,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #111;outline-offset:2px}
 button{cursor:pointer}
 </style>
 </helmet>
-<div style="position: relative; width: 390px; height: 1580px; box-sizing: border-box; background: {{paper}}; color: {{ink}}; font-family: 'Noto Sans KR', system-ui, sans-serif; font-size: 16px; line-height: 1.5; word-break: keep-all; display: flex; flex-direction: column; padding: 0 20px 24px; overflow: hidden">
+<div style="position: relative; width: 390px; height: 1610px; box-sizing: border-box; background: {{paper}}; color: {{ink}}; font-family: 'Noto Sans KR', system-ui, sans-serif; font-size: 16px; line-height: 1.5; word-break: keep-all; display: flex; flex-direction: column; padding: 0 20px 24px; overflow: hidden">
 <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; opacity: 0.2; mix-blend-mode: multiply; background-image: url(&quot;data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27160%27%20height%3D%27160%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.85%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27%2F%3E%3C%2Fsvg%3E&quot;); background-size: 160px 160px"></div>
 <header style="display: flex; align-items: flex-end; justify-content: space-between; padding: 24px 0 10px; border-bottom: 4px solid {{ink}}">
 <div style="font-family: 'Hahmlet', 'Noto Serif KR', serif; font-weight: 700; font-size: 28px; line-height: 1">홍대플로우</div>
@@ -28,7 +28,7 @@ button{cursor:pointer}
 <a href="CalendarBW.dc.html" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 48px; border: 2px solid {{ink}}; border-left: 0; text-decoration: none; font-size: 16px; font-weight: 700; background: #FAFAF8; color: {{ink}}">공연 달력</a>
 </nav>
 <section style="padding: 20px 0 0">
-<p style="margin: 0; font-size: 14px; color: #4A4A4A">11월 8일 일요일 · 저녁 8시 기준</p>
+<p style="margin: 0; font-size: 14px; color: #4A4A4A">저녁 8시 기준 · <button type="button" aria-haspopup="listbox" aria-label="걸어서 가는 거리 바꾸기, 지금 15분" style="min-height: 44px; padding: 0 2px; border: 0; background: transparent; color: #4A4A4A; font: inherit; font-size: 14px; text-decoration: underline">걸어서 15분 안 ▾</button></p>
 <h1 style="margin: 6px 0 0; font-family: 'Hahmlet', 'Noto Serif KR', serif; font-weight: 700; font-size: 34px; line-height: 1.18">지금 걸어서<br>갈 수 있는 공연 <span style="padding: 0 6px; background: {{ink}}; color: {{paper}}">4개</span></h1>
 </section>
 <div role="group" aria-label="공연 시간 고르기" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0 2px">
@@ -127,7 +127,7 @@ button{cursor:pointer}
 </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"ink":{"editor":"color","default":"#111111"},"paper":{"editor":"color","default":"#ECEBE7"},"$preview":{"width":390,"height":1580}}'>
+<script type="text/x-dc" data-dc-script data-props='{"ink":{"editor":"color","default":"#111111"},"paper":{"editor":"color","default":"#ECEBE7"},"$preview":{"width":390,"height":1610}}'>
 class Component extends DCLogic {
 renderVals() {
 return { ink: this.props.ink ?? '#111111', paper: this.props.paper ?? '#ECEBE7' };

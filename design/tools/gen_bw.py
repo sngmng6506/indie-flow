@@ -13,7 +13,7 @@ DISPLAY = "'Hahmlet', 'Noto Serif KR', serif"
 DFONT = f'font-family: {DISPLAY}; font-weight: 700;'
 
 HEIGHTS = {
-    'MainBW': 1580, 'DetailBW': 1180, 'CalendarBW': 1100,
+    'MainBW': 1610, 'DetailBW': 1180, 'CalendarBW': 1100,
     'NoLocBW': 1080, 'EmptyBW': 700, 'StatesBW': 840,
 }
 
@@ -180,7 +180,11 @@ def count_box(n):
 
 def main():
     body = header() + tabs('near')
-    body += hero('11월 8일 일요일 · 저녁 8시 기준', f'지금 걸어서<br>갈 수 있는 공연 {count_box("4개")}')
+    # 걷는 거리 설정: 거의 안 건드릴 값이라 보조 글자 줄에 밑줄 글자로만 둔다. 누르면 10·15·20·30분 선택.
+    walk = (f'<button type="button" aria-haspopup="listbox" aria-label="걸어서 가는 거리 바꾸기, 지금 15분" '
+            f'style="min-height: 44px; padding: 0 2px; border: 0; background: transparent; color: {SUB}; font: inherit; '
+            f'font-size: 14px; text-decoration: underline">걸어서 15분 안 ▾</button>')
+    body += hero(f'저녁 8시 기준 · {walk}', f'지금 걸어서<br>갈 수 있는 공연 {count_box("4개")}')
     body += chips(['지금 갈 수 있는', '오늘 밤'])
     body += card('20:00', '도보 4분', '달빛정거장 단독공연', '작은방 라이브홀', '기타 한 대로 부르는 잔잔한 노래', '25,000원',
                  poster=True, first=True, tag_html=tag('20분 뒤 시작'), tape_rot=-5)
