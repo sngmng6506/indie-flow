@@ -162,7 +162,6 @@ def survey():
 def footer(checked='19:40'):
     return (f'<footer style="margin-top: auto; padding-top: 12px; border-top: 2px solid {INK}; display: flex; '
             f'justify-content: space-between; align-items: center; font-size: 14px">\n'
-            f'<span>마지막 확인 {checked}</span>\n'
             f'<button type="button" style="min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: {INK}; '
             f'font: inherit; font-size: 14px; text-decoration: underline">정보가 다르면 알려주세요</button>\n</footer>\n')
 
@@ -244,7 +243,6 @@ def detail():
              f'<span style="color: {SUB}">출처: 작은방 라이브홀 인스타그램</span>\n'
              f'<a href="#" style="display: inline-flex; align-items: center; gap: 4px; min-height: 44px; color: {INK}; font-weight: 700">원본 게시물 {EXTERNAL}</a>\n</div>\n'
              f'<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">\n'
-             f'<span style="color: {SUB}">마지막 확인 19:40</span>\n'
              f'<button type="button" style="min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: {INK}; font: inherit; '
              f'font-size: 14px; text-decoration: underline">정보가 다르면 알려주세요</button>\n</div>\n</section>\n')
     # 하단 고정 바: 실제 화면에서는 position: sticky; bottom: 0 으로 붙는다.
