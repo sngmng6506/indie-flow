@@ -10,7 +10,7 @@
 
 ## GET /api/events
 
-오늘 근처 공연 목록을 시작 시간 순으로 돌려준다. 4시간 안에 시작하는 공연이 먼저, 그 안에서는 처음 가기 좋은 공연, 그다음 가까운 순이다.
+오늘 근처 공연 목록을 시작 시간 순으로 돌려준다. 4시간 안에 시작하는 공연이 먼저, 그다음 가까운 순이다.
 
 ### 요청 (쿼리)
 
@@ -36,7 +36,6 @@
       "venue": {"id": "ven_12", "name": "작은방 라이브홀"},
       "walkMinutes": 4,
       "summary": "기타 한 대로 부르는 잔잔한 노래",
-      "firstTimerFriendly": true,
       "doorPrice": 25000,
       "poster": {"url": "https://.../poster.webp", "alt": "달빛정거장 단독공연 · 작은방 라이브홀 포스터"}
     }
@@ -64,7 +63,6 @@
 | --- | --- | --- | --- |
 | `from` | `YYYY-MM-DD` | 예 | 시작 날짜 |
 | `days` | 정수 (1~31) | 아니요 | 기본 7 |
-| `firstTimerOnly` | boolean | 아니요 | 처음 가기 좋은 공연만 셀지 |
 
 ### 성공
 
@@ -96,7 +94,6 @@
   "doorsOpenAt": "2026-11-08T19:30:00+09:00",
   "title": "달빛정거장 단독공연",
   "venue": {"id": "ven_12", "name": "작은방 라이브홀", "address": "[도로명 주소] 지하 1층", "lat": 37.0, "lng": 126.0},
-  "firstTimerFriendly": true,
   "doorPrice": 25000,
   "advancePrice": 22000,
   "ticketUrl": "https://...",

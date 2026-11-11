@@ -13,7 +13,7 @@ DISPLAY = "'Hahmlet', 'Noto Serif KR', serif"
 DFONT = f'font-family: {DISPLAY}; font-weight: 700;'
 
 HEIGHTS = {
-    'MainBW': 1610, 'DetailBW': 1180, 'CalendarBW': 1100,
+    'MainBW': 1610, 'DetailBW': 1180, 'CalendarBW': 1010,
     'NoLocBW': 1080, 'EmptyBW': 700, 'StatesBW': 840,
 }
 
@@ -115,8 +115,6 @@ def card(time, where, title, venue, desc, price, poster=False, first=False, tag_
     badges = ''
     if extra_stamp:
         badges += stamp(extra_stamp, -2)
-    if first:
-        badges += stamp('처음 가기 좋음')
     price_html = price_html or f'<span style="font-size: 15px; font-weight: 700; white-space: nowrap">{price}</span>'
     text = (f'<a href="DetailBW.dc.html" style="flex: 1; min-width: 0; display: flex; flex-direction: column; color: {INK}; text-decoration: none">\n'
             f'{tag_html}<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">\n'
@@ -214,7 +212,7 @@ def detail():
              f'<p style="margin: 0; font-size: 14px; color: {SUB}">오늘 · 11월 8일 일요일</p>\n'
              f'<h1 style="margin: 6px 0 0; {DFONT} font-size: 30px; line-height: 1.15; overflow-wrap: anywhere">달빛정거장 단독공연</h1>\n'
              f'<p style="margin: 6px 0 0; font-size: 16px">작은방 라이브홀</p>\n'
-             f'<div style="margin-top: auto; padding-top: 12px">{stamp("처음 가기 좋음")}</div>\n</div>\n</section>\n')
+             f'</div>\n</section>\n')
     fact = lambda label, value, sub: (f'<div style="flex: 1; padding: 14px 16px; background: {CARD}; border: 2px solid {INK}">\n'
                                       f'<div style="font-size: 14px; font-weight: 700; color: {SUB}">{label}</div>\n'
                                       f'<div style="margin-top: 4px; {DFONT} font-size: 24px; line-height: 1.1">{value}</div>\n'
@@ -280,7 +278,6 @@ def calendar():
                  f'<span style="font-size: 14px; font-weight: 700; color: {sub}">{n}</span>\n</button>\n')
     body += '</div>\n'
     body += (f'<p style="margin: 6px 0 0; font-size: 14px; color: {SUB}">날짜 아래 숫자는 그날 공연 수예요.</p>\n')
-    body += chips(['전체', '처음 가기 좋은 공연만'], 0, '공연 고르기')
     body += (f'<h2 style="margin: 18px 0 0; font-size: 18px; font-weight: 700">11월 8일 일요일 · 공연 6개</h2>\n'
              f'<div style="margin-top: 10px; background: {CARD}; border: 2px solid {INK}">\n')
     rows = [('18:00', '오후의 포크', '합정 작은무대', '15,000원', False, True),
@@ -292,7 +289,7 @@ def calendar():
     for i, (t, title, venue, price, first, ended) in enumerate(rows):
         top = f'border-top: 2px solid {INK}; ' if i else ''
         tcolor = SUB if ended else INK
-        meta = venue + ('<span style="display: block; margin-top: 4px">' + stamp('처음 가기 좋음', 0) + '</span>' if first else '')
+        meta = venue
         right = (f'<span style="font-size: 14px; font-weight: 700; padding: 0 6px; border: 2px solid {SUB}; color: {SUB}; white-space: nowrap">끝남</span>'
                  if ended else f'<span style="font-size: 15px; font-weight: 700; white-space: nowrap">{price}</span>')
         body += (f'<a href="DetailBW.dc.html" style="{top}display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; '
