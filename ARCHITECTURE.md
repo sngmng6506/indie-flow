@@ -1,49 +1,36 @@
 # Indie Flow — Architecture
 
-## Scope
-- Railway Node.js service: Astro SSR pages, admin HTML forms, REST endpoints.
-- Railway PostgreSQL: durable venues/events, correction requests, anonymous action logs.
-- Excluded: Instagram Graph API, LLM inference, paid advertising, QR integration, automatic scraping.
-- Data enters through admin forms. Only `published` events are served publicly; posters require `poster_approved`.
-
 ## Runtime
+- Railway web service: Astro SSR with Node adapter, HTML pages and same-origin REST endpoints.
+- Railway PostgreSQL: venues, events, edit requests, action logs, rolling request limits.
+- No Instagram/LLM API calls; admins register shows or import JSON and approve each event.
+
+## Request flow
 ```
-Visitor -> Astro SSR (/) -> PostgreSQL
-        -> /events/:id -> PostgreSQL
-        -> /api/events, /api/calendar -> PostgreSQL
-Operator -> /admin/login -> HMAC-signed HttpOnly cookie
-         -> /admin -> /api/admin/* -> PostgreSQL
-Future ingest adapter -> validation -> operator review -> events
+Visitor → /, /events/:id → GET /api/events and /api/calendar → published events
+Admin → /admin/login → signed HttpOnly cookie → /admin and /api/admin/* → PostgreSQL
+JSON import → validation → pending review → approved events
 ```
 
-## Code boundaries
-- `src/lib/db.ts`: pooled PostgreSQL connection
-- `src/lib/events.ts`: public reads, date/distance rules
-- `src/lib/validation.ts`: Zod input schemas
-- `src/lib/auth.ts`: signed admin session, origin checking
-- `src/pages/api`: request boundary, permission and validation
-- `src/pages/admin`: protected operator UI
-- `sql/001_init.sql`: idempotent baseline schema
-- `scripts/migrate.mjs`: deployment schema bootstrap
-
-## Deliberate decisions
-- One Railway web service and one PostgreSQL service: minimal moving parts and resource cost.
-- SQL tagged templates via postgres.js rather than an extra ORM: explicit queries and easy audits for a small data model.
-- Single admin password from Railway secret variables: acceptable for one operator only; migrate to identity-provider or account model before adding venue accounts.
-- No new infrastructure for media: only use external poster URLs when licensing/permission is confirmed.
-- Search bots should not index draft data or admin pages.
-- API keys and any future extraction workers belong server-side.
+## Repository boundaries
+- `src/lib/events.ts`: public reads, date/distance estimates
+- `src/lib/validation.ts`: Zod validation for all write inputs
+- `src/lib/auth.ts`: HMAC admin sessions and Origin controls
+- `src/lib/rate-limit.ts`: shared PostgreSQL rate limits and HMAC address hashing
+- `src/pages/api/`: REST and admin mutations
+- `sql/001_init.sql`, `sql/002_security.sql`: idempotent schemas
+- `scripts/migrate.mjs`: startup schema setup
 
 ## Deployment
-1. Configure Railway PostgreSQL and `DATABASE_URL` using the database's internal connection variable.
-2. Set `ADMIN_PASSWORD` (16+ characters), `SESSION_SECRET` (independent random 32+ characters), `PUBLIC_SITE_URL` (canonical https:// domain).
-3. Attach repository; use Node 22+, `npm run build` and `npm run db:migrate && npm run start`. Bind Railway `PORT` via standalone Node adapter.
-4. Health endpoint: `/api/health`. Confirm successful database query before allowing traffic.
-5. For rollback, redeploy previous commit; schema migration 001 is additive/idempotent. Back up PostgreSQL before changing schema or deleting data.
+Configure Railway variables: `DATABASE_URL`, `ADMIN_PASSWORD` (16+ random characters),
+`SESSION_SECRET` (32+ random characters), `PUBLIC_SITE_URL` (HTTPS URL).
+Start command `npm run db:migrate && npm run start`; health check `/api/health`.
+Back up DB before modifying tables. See [security checklist](docs/SECURITY.md).
 
 ## Known limits
-- Approximate walking minutes use straight-line distance and 75m/min; do not advertise them as actual routes.
-- Admin password is shared, with no audit by person or multi-user roles.
-- Business Discovery/Instagram PoC and automated moderation remain unimplemented.
-- Public event dates are rendered in Korean; English is currently a lightweight list UI translation, not localized event content.
-- No persistent rate limiter or import worker yet; before broad public launch add abuse protection to correction requests and logging.
+- Walking time is an approximation from straight-line distance and assumes 75m/min.
+- Initial service area is Hongdae and its neighboring districts.
+- English is only a partial UI translation; event content is not translated automatically.
+- Single shared admin account, no MFA and no individual session revocation.
+- IP rate limiting can be shared behind a proxy; verify on Railway.
+- No paid ads, automatic scraping, Instagram integrations, file uploads or AI generation.
