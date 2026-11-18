@@ -9,13 +9,13 @@ const walk=['10','15','20','30','all'].includes(current)?current:'15';
 const dateCounts=await getCounts(seoulDate(),14);
 const countMap=new Map(dateCounts.map(c=>[c.date,Number(c.count)]));
 const dates=Array.from({length:14},(_,i)=>{const d=new Date(seoulDate()+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10)});
-const events=(await getEvents(selected)).map(e=>publicEvent(e,origin));
-const visible=events.filter(e=>walk==='all'||e.walkMinutes===null||e.walkMinutes<=Number(walk));
-const farther=events.length-visible.length;
 const lat=Number(Astro.url.searchParams.get('lat')),lng=Number(Astro.url.searchParams.get('lng'));
 const hasCoords=Astro.url.searchParams.has('lat')&&Astro.url.searchParams.has('lng')&&Number.isFinite(lat)&&Number.isFinite(lng)&&lat>=-90&&lat<=90&&lng>=-180&&lng<=180;
 const near=hasCoords&&walkMinutes(hongdae,{lat,lng})<=30;
 const origin=near?{lat,lng,name:'내 위치'}:hongdae;
+const events=(await getEvents(selected)).map(e=>publicEvent(e,origin));
+const visible=events.filter(e=>walk==='all'||e.walkMinutes===null||e.walkMinutes<=Number(walk));
+const farther=events.length-visible.length;
 const en=language==='en';
 const dateFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{month:'long',day:'numeric',weekday:'short',timeZone:'Asia/Seoul'});
 const timeFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
@@ -34,6 +34,7 @@ const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`+(near?`&l
     <form method="GET" action="/">
       <input type="hidden" name="date" value={selected}/>
       <input type="hidden" name="lang" value={language}/>
+      {near&&<><input type="hidden" name="lat" value={lat}/><input type="hidden" name="lng" value={lng}/></>}
       <label for="walk">{en?'Walking distance':'걷는 시간'}</label>
       <select id="walk" name="walk">
         {['10','15','20','30','all'].map(v=><option value={v} selected={v===walk}>{v==='all'?(en?'All shows':'전체 공연'):(en?`${v} minutes`:`${v}분`)}</option>)}
