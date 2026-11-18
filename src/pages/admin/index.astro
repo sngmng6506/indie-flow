@@ -9,7 +9,7 @@ const requests=await db()`SELECT r.id,r.field,r.note,r.created_at,e.title FROM e
 const message=Astro.url.searchParams.get('message');
 ---
 <Base title="운영자 대시보드" noindex><h1>공연 운영</h1>
-  <nav class="admin-nav"><a class="btn" href="/admin/events/new">공연 등록</a><a class="btn" href="#venue">공연장 추가</a><form action="/api/admin/logout" method="POST"><button class="btn" type="submit">로그아웃</button></form></nav>
+  <nav class="admin-nav"><a class="btn" href="/admin/events/new">공연 등록</a><a class="btn" href="/admin/import">JSON 가져오기</a><a class="btn" href="#venue">공연장 추가</a><form action="/api/admin/logout" method="POST"><button class="btn" type="submit">로그아웃</button></form></nav>
   {message&&<p class="notice">{message==='saved'?'저장했습니다.':message==='venue'?'공연장을 추가했습니다.':message==='resolved'?'수정 요청을 처리했습니다.':'작업을 처리하지 못했습니다.'}</p>}
   <h2>공연 ({events.length}건 최근순)</h2>
   <div class="table-scroll"><table class="admin-table"><thead><tr><th>공연</th><th>공연장</th><th>날짜</th><th>상태</th><th>수정</th></tr></thead><tbody>{events.map(e=><tr><td>{e.title}</td><td>{e.venue_name}</td><td>{new Date(e.starts_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})}</td><td><span class="pill">{e.status}</span></td><td><a href={`/admin/events/${e.id}`}>편집</a></td></tr>)}</tbody></table></div>
