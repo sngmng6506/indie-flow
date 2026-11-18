@@ -4,6 +4,7 @@ import { checkAdminWrite,formText } from '../../../lib/http';
 import { eventInput,fromSeoulLocal,optionalNumber } from '../../../lib/validation';
 export const POST: APIRoute = async ctx => {
   const error=checkAdminWrite(ctx);if(error)return error;
+  if(Number(ctx.request.headers.get('content-length')||0)>16384)return new Response('Payload too large',{status:413});
   const f=await ctx.request.formData();
   const obj=Object.fromEntries(['venueId','title','startsAt','doorsOpenAt','doorPrice','advancePrice','ticketUrl','sourceUrl','sourceName','summary','lineup','previewUrl','posterUrl','status'].map(k=>[k,formText(f,k)]));
   const parsed=eventInput.safeParse({...obj,posterApproved:f.get('posterApproved')==='on'});
