@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 const httpsUrl = z.url().refine(v => new URL(v).protocol === 'https:', 'HTTPS URL required');
 export const safeUrl = z.union([httpsUrl, z.literal('')]).transform(v => v || null);
-const optionalAmount = z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.coerce.number().int().nonnegative(), z.null()]));
-const optionalCoordinate = (min:number,max:number) => z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.coerce.number().min(min).max(max),z.null()]));
+const optionalAmount = z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.null(), z.coerce.number().int().nonnegative()]));
+const optionalCoordinate = (min:number,max:number) => z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.null(),z.coerce.number().min(min).max(max)]));
 export const eventInput = z.object({
   venueId: z.coerce.number().int().positive(),
   title: z.string().trim().min(2).max(180),
