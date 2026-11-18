@@ -1,4 +1,4 @@
-"""홍대플로우 흑백안 목업 보드를 만든다.
+"""인디플로우 흑백안 목업 보드를 만든다.
 
 화면은 공연 목록, 공연 상세 두 장이고 출발 위치·걷는 시간 시트가 하나 있다.
 반복되는 마크업을 한 곳에서 고치려고 생성 스크립트로 둔다.
@@ -80,7 +80,7 @@ def card(time, walk, title, venue, price, desc=None, soon=None, poster=False):
 def list_screen():
     days = [('오늘', 8, 6), ('월', 9, 2), ('화', 10, 1), ('수', 11, 3), ('목', 12, 4), ('금', 13, 9), ('토', 14, 11)]
     body = (f'<header style="padding: 24px 0 10px; border-bottom: 4px solid {INK}">\n'
-            f'<div style="{DFONT} font-size: 28px; line-height: 1">홍대플로우</div>\n</header>\n')
+            f'<div style="{DFONT} font-size: 28px; line-height: 1">인디플로우</div>\n</header>\n')
     # 날짜 띠: 선택된 날만 검정 채움. 옆으로 밀면 2주 뒤까지 나온다.
     body += f'<div role="group" aria-label="날짜 고르기" style="display: flex; border-bottom: 2px solid {INK}">\n'
     for i, (wd, d, n) in enumerate(days):
@@ -109,7 +109,7 @@ def list_screen():
     body += (f'<button type="button" style="{TEXT_BTN}; align-self: center; min-height: 52px; margin-top: 10px; font-size: 16px; font-weight: 700">'
              f'더 먼 공연 2개도 보기</button>\n')
     body += (f'<footer style="margin-top: auto; padding-top: 8px; border-top: 2px solid {INK}">\n{report_button()}\n</footer>\n')
-    page('ListBW', '홍대플로우 공연 목록', body)
+    page('ListBW', '인디플로우 공연 목록', body)
 
 
 def detail():
