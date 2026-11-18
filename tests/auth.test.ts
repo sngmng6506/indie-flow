@@ -20,7 +20,7 @@ test('admin signed session can be verified and invalid signature rejected',()=>{
   signIn(cookies as never);
   assert.equal(isAdmin(cookies as never),true);
   const original=store.get('indie_admin')||'';
-  store.set('indie_admin',original.slice(0,-1)+'0');
+  store.set('indie_admin',original.slice(0,-1)+(original.endsWith('0')?'1':'0'));
   assert.equal(isAdmin(cookies as never),false);
   signOut(cookies as never);
   assert.equal(isAdmin(cookies as never),false);

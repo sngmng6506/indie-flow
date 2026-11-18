@@ -21,7 +21,7 @@ export function sameSecret(input: string) {
 export function signIn(cookies: AstroCookies) {
   const value = String(Date.now() + maxAge * 1000) + '.' + randomBytes(12).toString('hex');
   cookies.set(cookieName, value + '.' + sign(value), {
-    httpOnly: true, sameSite: 'strict', secure: import.meta.env.PROD, path: '/', maxAge
+    httpOnly: true, sameSite: 'strict', secure: (import.meta.env?.PROD ?? (process.env.NODE_ENV === 'production')), path: '/', maxAge
   });
 }
 export function signOut(cookies: AstroCookies) {
