@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const httpsUrl = z.url().refine(v => new URL(v).protocol === 'https:', 'HTTPS URL required');
+const httpsUrl = z.url().refine(v => v.startsWith('https://'), 'HTTPS URL required');
 export const safeUrl = z.union([httpsUrl, z.literal('')]).transform(v => v || null);
 const optionalAmount = z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.null(), z.coerce.number().int().nonnegative()]));
 const optionalCoordinate = (min:number,max:number) => z.preprocess(v => v === '' || v === undefined ? null : v, z.union([z.null(),z.coerce.number().min(min).max(max)]));
