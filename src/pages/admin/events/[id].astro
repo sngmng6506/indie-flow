@@ -1,0 +1,27 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { isAdmin } from '../../../lib/auth';
+import { getEvent,getVenues } from '../../../lib/events';
+if(!isAdmin(Astro.cookies))return Astro.redirect('/admin/login');
+const id=Number(Astro.params.id),e=Number.isSafeInteger(id)&&id>0?await getEvent(id,true):null;
+if(!e)return Astro.redirect('/admin',302);
+const venues=await getVenues();
+const dt=(v:Date|string|null)=>v?new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)).replace(' ','T'):'';
+---
+<Base title={'편집 · '+e.title} noindex><p><a href="/admin">← 관리자로</a></p><h1>공연 수정</h1><form action="/api/admin/events" method="POST">
+  <input type="hidden" name="id" value={e.id}/>
+  <div class="field"><label for="venueId">공연장</label><select name="venueId" id="venueId">{venues.map(v=><option value={v.id} selected={Number(v.id)===Number(e.venue_id)}>{v.name}</option>)}</select></div>
+  <div class="field"><label for="title">공연명</label><input id="title" name="title" value={e.title} required maxlength="180"/></div>
+  <div class="fact-grid"><div class="field"><label for="startsAt">공연 시작</label><input id="startsAt" name="startsAt" type="datetime-local" value={dt(e.starts_at)} required/></div><div class="field"><label for="doorsOpenAt">입장 시작</label><input id="doorsOpenAt" name="doorsOpenAt" type="datetime-local" value={dt(e.doors_open_at)}/></div></div>
+  <div class="fact-grid"><div class="field"><label for="doorPrice">현장 가격</label><input id="doorPrice" name="doorPrice" type="number" min="0" value={e.door_price??''}/></div><div class="field"><label for="advancePrice">예매 가격</label><input id="advancePrice" name="advancePrice" type="number" min="0" value={e.advance_price??''}/></div></div>
+  <div class="field"><label for="lineup">출연진</label><input id="lineup" name="lineup" value={e.lineup??''}/></div>
+  <div class="field"><label for="summary">소개</label><textarea id="summary" name="summary">{e.summary??''}</textarea></div>
+  <div class="field"><label for="ticketUrl">예매 URL</label><input id="ticketUrl" name="ticketUrl" value={e.ticket_url??''}/></div>
+  <div class="field"><label for="sourceUrl">출처 URL</label><input id="sourceUrl" name="sourceUrl" value={e.source_url} required/></div>
+  <div class="field"><label for="sourceName">출처 이름</label><input id="sourceName" name="sourceName" value={e.source_name??''}/></div>
+  <div class="field"><label for="previewUrl">음악 미리 듣기 URL</label><input id="previewUrl" name="previewUrl" value={e.preview_url??''}/></div>
+  <div class="field"><label for="posterUrl">포스터 URL</label><input id="posterUrl" name="posterUrl" value={e.poster_url??''}/></div>
+  <label class="checkline"><input type="checkbox" name="posterApproved" value="on" checked={e.poster_approved}/> 포스터 사용 허락 확인</label>
+  <div class="field"><label for="status">상태</label><select id="status" name="status">{['draft','pending','published','hidden'].map(s=><option value={s} selected={s===e.status}>{s}</option>)}</select></div>
+  <button class="btn primary" type="submit">수정 저장</button>
+</form></Base>

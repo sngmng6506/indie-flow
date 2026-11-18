@@ -1,0 +1,25 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { isAdmin } from '../../../lib/auth';
+import { getVenues } from '../../../lib/events';
+if(!isAdmin(Astro.cookies))return Astro.redirect('/admin/login');
+const venues=await getVenues();
+---
+<Base title="공연 등록" noindex><p><a href="/admin">← 관리자로</a></p><h1>새 공연 등록</h1>
+{venues.length===0?<div class="notice">먼저 관리자 화면에서 공연장을 등록하세요.</div>:<form action="/api/admin/events" method="POST">
+  <div class="field"><label for="venueId">공연장</label><select name="venueId" id="venueId" required>{venues.map(v=><option value={v.id}>{v.name}</option>)}</select></div>
+  <div class="field"><label for="title">공연명</label><input id="title" name="title" required maxlength="180"/></div>
+  <div class="fact-grid"><div class="field"><label for="startsAt">공연 시작 (한국시간)</label><input id="startsAt" name="startsAt" type="datetime-local" required/></div><div class="field"><label for="doorsOpenAt">입장 시작 (선택)</label><input id="doorsOpenAt" name="doorsOpenAt" type="datetime-local"/></div></div>
+  <div class="fact-grid"><div class="field"><label for="doorPrice">현장 가격 (원)</label><input id="doorPrice" name="doorPrice" type="number" min="0"/></div><div class="field"><label for="advancePrice">예매 가격 (원)</label><input id="advancePrice" name="advancePrice" type="number" min="0"/></div></div>
+  <div class="field"><label for="lineup">출연진</label><input id="lineup" name="lineup" maxlength="1000"/></div>
+  <div class="field"><label for="summary">출처가 확인된 소개</label><textarea id="summary" name="summary" maxlength="500"></textarea></div>
+  <div class="field"><label for="ticketUrl">예매 URL (선택)</label><input id="ticketUrl" name="ticketUrl" type="url"/></div>
+  <div class="field"><label for="sourceUrl">원본 출처 HTTPS URL</label><input id="sourceUrl" name="sourceUrl" type="url" required/></div>
+  <div class="field"><label for="sourceName">출처 이름</label><input id="sourceName" name="sourceName" maxlength="120"/></div>
+  <div class="field"><label for="previewUrl">음악 미리 듣기 URL</label><input id="previewUrl" name="previewUrl" type="url"/></div>
+  <div class="field"><label for="posterUrl">포스터 URL (허락받은 것만)</label><input id="posterUrl" name="posterUrl" type="url"/></div>
+  <label class="checkline"><input type="checkbox" name="posterApproved" value="on"/> 포스터 사용 허락 확인</label>
+  <div class="field"><label for="status">게시 상태</label><select id="status" name="status"><option value="draft">초안</option><option value="pending">검수 대기</option><option value="published">승인 후 즉시 게시</option><option value="hidden">비공개</option></select></div>
+  <button class="btn primary" type="submit">공연 저장</button>
+</form>}
+</Base>

@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getEvent,hongdae,walkMinutes } from '../../lib/events';
+const id=Number(Astro.params.id);
+const e=Number.isSafeInteger(id)&&id>0?await getEvent(id):null;
+if(!e) return Astro.redirect('/404',302);
+const time=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hour12:false});
+const day=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric',weekday:'long'});
+const mins=e.lat!==null&&e.lng!==null?walkMinutes(hongdae,{lat:Number(e.lat),lng:Number(e.lng)}):null;
+const poster=e.poster_approved?e.poster_url:null;
+const directions=e.lat!==null&&e.lng!==null?`https://map.naver.com/p/search/${encodeURIComponent(e.venue_address)}`:`https://map.naver.com/p/search/${encodeURIComponent(e.venue_name)}`;
+const description=e.summary||`${e.venue_name}에서 열리는 ${e.title}. 시간·가격·예매 정보 확인.`;
+const schema={ '@context':'https://schema.org','@type':'MusicEvent',name:e.title,startDate:new Date(e.starts_at).toISOString(),location:{'@type':'Place',name:e.venue_name,address:e.venue_address},url:Astro.url.toString(), ...(e.ticket_url?{offers:{'@type':'Offer',url:e.ticket_url,price:e.advance_price??e.door_price??undefined,priceCurrency:'KRW'}}:{}) };
+---
+<Base title={e.title} description={description}>
+  <p style="margin:20px 0"><a href="/">← 공연 목록으로</a></p>
+  <p class="small muted">{day.format(new Date(e.starts_at))}</p>
+  <h1 class="detail-title">{e.title}</h1>
+  <p>{e.venue_name}</p>
+  {poster&&<img src={poster} alt={e.title+' 공연 포스터'} style="width:180px;max-width:100%;margin:18px 0" loading="lazy"/>}
+  <div class="fact-grid" style="margin:24px 0">
+    <div class="fact"><span class="small muted">시작 시간</span><strong>{time.format(new Date(e.starts_at))}</strong>{e.doors_open_at&&<span class="small muted">{time.format(new Date(e.doors_open_at))}부터 입장</span>}</div>
+    <div class="fact"><span class="small muted">현장 가격</span><strong>{e.door_price===null?'미공지':Number(e.door_price).toLocaleString('ko-KR')+'원'}</strong>{e.advance_price!==null&&<span class="small muted">예매 {Number(e.advance_price).toLocaleString('ko-KR')}원</span>}</div>
+  </div>
+  <section class="detail-section"><h2>출연</h2><strong>{e.lineup||'출연진 정보 확인 중'}</strong>{e.summary&&<p>{e.summary}</p>}{e.preview_url&&<p><a target="_blank" rel="noopener noreferrer" href={e.preview_url}>음악 미리 듣기 ↗</a></p>}</section>
+  <section class="detail-section"><h2>찾아가는 길</h2><strong>{e.venue_name}</strong><p>{e.venue_address}</p><p class="small muted">{mins===null?'도보 시간 정보 없음':`홍대입구역에서 도보 약 ${mins}분 (직선거리 추정)`}</p></section>
+  <section class="detail-section"><h2>공연 정보 출처</h2><p><a class="safe-break" href={e.source_url} target="_blank" rel="noopener noreferrer">{e.source_name||e.venue_name} 원본 게시물 ↗</a></p><button class="underlink" id="report-btn" type="button">정보가 다르면 알려주세요</button>
+    <form id="report" hidden><div class="field"><label for="report-field">수정할 항목</label><select id="report-field" name="field"><option value="time">시간</option><option value="price">가격</option><option value="place">장소</option><option value="canceled">취소</option><option value="other">기타</option></select></div><div class="field"><label for="report-note">설명 (선택)</label><textarea id="report-note" name="note" maxlength="300"></textarea></div><button class="btn" type="submit">보내기</button><p aria-live="polite" id="report-result"></p></form>
+  </section>
+  <div class="actions"><a class="btn" href={directions} target="_blank" rel="noopener noreferrer" data-track="route_click">길찾기</a>{e.ticket_url&&<a class="btn primary" href={e.ticket_url} target="_blank" rel="noopener noreferrer" data-track="ticket_click">예매하기</a>}</div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')}/>
+</Base>
+<script>
+const btn=document.querySelector('#report-btn'), form=document.querySelector<HTMLFormElement>('#report');
+btn?.addEventListener('click',()=>{if(form)form.hidden=!form.hidden;});
+form?.addEventListener('submit',async ev=>{ev.preventDefault();const id=location.pathname.split('/').pop();const fd=new FormData(form);try{const r=await fetch('/api/events/'+id+'/edit-requests',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.fromEntries(fd.entries()))});if(!r.ok)throw Error('failed');document.querySelector('#report-result')!.textContent='수정 요청을 접수했습니다.';form.reset();}catch{document.querySelector('#report-result')!.textContent='요청을 보내지 못했습니다.';}});
+document.querySelectorAll('[data-track]').forEach(el=>el.addEventListener('click',()=>{const id=location.pathname.split('/').pop();fetch('/api/log',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({type:el.getAttribute('data-track'),eventId:Number(id)}),keepalive:true}).catch(()=>{});}));
+</script>

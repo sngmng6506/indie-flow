@@ -1,0 +1,47 @@
+import { db } from './db';
+export async function getVenues() {
+  return db()`SELECT id, name, address, lat, lng, instagram FROM venues ORDER BY name`;
+}
+export async function getEvent(id: number, admin = false) {
+  const rows = await db()`SELECT e.*, v.name AS venue_name, v.address AS venue_address, v.lat, v.lng
+    FROM events e JOIN venues v ON v.id=e.venue_id
+    WHERE e.id=${id} AND (${admin} OR e.status='published') LIMIT 1`;
+  return rows[0] ?? null;
+}
+export async function getEvents(date: string, admin = false) {
+  return db()`SELECT e.*, v.name AS venue_name, v.address AS venue_address, v.lat, v.lng
+    FROM events e JOIN venues v ON v.id=e.venue_id
+    WHERE (${admin} OR e.status='published')
+    AND (${admin} OR (e.starts_at >= now() AND (e.starts_at AT TIME ZONE 'Asia/Seoul')::date = ${date}::date))
+    ORDER BY e.starts_at ASC LIMIT 500`;
+}
+export async function getCounts(from: string, days = 14) {
+  return db()`SELECT (starts_at AT TIME ZONE 'Asia/Seoul')::date::text AS date, count(*)::int AS count
+    FROM events WHERE status='published' AND starts_at >= now()
+    AND (starts_at AT TIME ZONE 'Asia/Seoul')::date >= ${from}::date
+    AND (starts_at AT TIME ZONE 'Asia/Seoul')::date < (${from}::date + ${days}::int)
+    GROUP BY 1 ORDER BY 1`;
+}
+export function seoulDate(date = new Date()) {
+  return new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
+}
+export function isDate(value: string) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(value + 'T00:00:00Z').valueOf())
+    && new Date(value + 'T00:00:00Z').toISOString().slice(0,10) === value;
+}
+export function walkMinutes(a: {lat:number,lng:number}, b: {lat:number,lng:number}) {
+  const rad = Math.PI/180;
+  const y = (b.lat-a.lat)*111195;
+  const x = (b.lng-a.lng)*111195*Math.cos((a.lat+b.lat)/2*rad);
+  return Math.ceil(Math.hypot(x,y)/75);
+}
+export const hongdae = {lat:37.5572,lng:126.9245,name:'홍대입구역'};
+export function publicEvent(e: any, origin = hongdae) {
+  const hasLocation = e.lat !== null && e.lng !== null;
+  return {
+    id: String(e.id), title:e.title, startsAt:e.starts_at, venue:{id:String(e.venue_id),name:e.venue_name},
+    walkMinutes:hasLocation?walkMinutes(origin,{lat:Number(e.lat),lng:Number(e.lng)}):null,
+    summary:e.summary, doorPrice:e.door_price,
+    poster:e.poster_approved && e.poster_url?{url:e.poster_url,alt:`${e.title} · ${e.venue_name} 포스터`}:null
+  };
+}
