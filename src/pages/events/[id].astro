@@ -12,9 +12,11 @@ const mins=e.lat!==null&&e.lng!==null?walkMinutes(hongdae,{lat:Number(e.lat),lng
 const poster=e.poster_approved?e.poster_url:null;
 const directions=e.lat!==null&&e.lng!==null?`https://map.naver.com/p/search/${encodeURIComponent(e.venue_address)}`:`https://map.naver.com/p/search/${encodeURIComponent(e.venue_name)}`;
 const description=e.summary||(en?`${e.title} at ${e.venue_name}. Show time, price and tickets.`:`${e.venue_name}에서 열리는 ${e.title}. 시간·가격·예매 정보 확인.`);
-const schema={ '@context':'https://schema.org','@type':'MusicEvent',name:e.title,startDate:new Date(e.starts_at).toISOString(),location:{'@type':'Place',name:e.venue_name,address:e.venue_address},url:Astro.url.toString(), ...(e.ticket_url?{offers:{'@type':'Offer',url:e.ticket_url,price:e.advance_price??e.door_price??undefined,priceCurrency:'KRW'}}:{}) };
+const canonical=new URL(Astro.url.pathname,import.meta.env.PUBLIC_SITE_URL||import.meta.env.SITE||Astro.url.origin).toString();
+const offerPrice=e.advance_price??e.door_price;
+const schema={ '@context':'https://schema.org','@type':'MusicEvent',name:e.title,startDate:new Date(e.starts_at).toISOString(),eventStatus:'https://schema.org/EventScheduled',eventAttendanceMode:'https://schema.org/OfflineEventAttendanceMode',location:{'@type':'Place',name:e.venue_name,address:{'@type':'PostalAddress',streetAddress:e.venue_address,addressLocality:'Seoul',addressCountry:'KR'}},url:canonical,description:description,...(poster?{image:[poster]}:{}),...(e.ticket_url?{offers:{'@type':'Offer',url:e.ticket_url,availability:'https://schema.org/InStock',...(offerPrice!==null?{price:Number(offerPrice),priceCurrency:'KRW'}:{})}}:{}) };
 ---
-<Base title={e.title} description={description} lang={lang}>
+<Base title={e.title} description={description} lang={lang} image={poster}>
   <p style="margin:20px 0"><a href={`/?lang=${lang}`}>{en?'← All shows':'← 공연 목록으로'}</a></p>
   <p class="small muted">{day.format(new Date(e.starts_at))}</p>
   <h1 class="detail-title">{e.title}</h1>
