@@ -16,7 +16,13 @@ const filteredTotal=status==='all'?total:Number(totals.find(r=>r.status===status
 const events=await db()`SELECT e.id,e.title,e.starts_at,e.status,v.name AS venue_name FROM events e JOIN venues v ON v.id=e.venue_id WHERE (${status}='all' OR e.status=${status}) ORDER BY e.created_at DESC,e.id DESC LIMIT ${perPage} OFFSET ${offset}`;
 const pageLink=(p:number,s=status)=>'/admin?status='+s+'&page='+p;
 const venues=await db()`SELECT id,name FROM venues ORDER BY name`;
-const requests=await db()`SELECT r.id,r.field,r.note,r.created_at,e.title FROM edit_requests r JOIN events e ON e.id=r.event_id WHERE NOT r.resolved ORDER BY r.created_at DESC LIMIT 30`;
+const requestPageRaw=Number(Astro.url.searchParams.get('requestPage')||'1');
+const requestPage=Number.isSafeInteger(requestPageRaw)&&requestPageRaw>0?Math.min(requestPageRaw,100000):1;
+const requestPageSize=20;
+const requestCountRows=await db()`SELECT count(*)::int AS count FROM edit_requests WHERE NOT resolved`;
+const requestCount=Number(requestCountRows[0]?.count||0);
+const requests=await db()`SELECT r.id,r.field,r.note,r.created_at,e.title FROM edit_requests r JOIN events e ON e.id=r.event_id WHERE NOT r.resolved ORDER BY r.created_at DESC,r.id DESC LIMIT ${requestPageSize} OFFSET ${(requestPage-1)*requestPageSize}`;
+const requestPageLink=(p:number)=>'/admin?status='+status+'&page='+page+'&requestPage='+p+'#requests';
 const message=Astro.url.searchParams.get('message');
 const statusNames:Record<string,string>={draft:'초안',pending:'검수 대기',published:'게시됨',hidden:'비공개'};
 const pending=Number(totals.find(r=>r.status==='pending')?.count||0);
@@ -45,8 +51,13 @@ const published=Number(totals.find(r=>r.status==='published')?.count||0);
     <div class="field"><label for="instagram">Instagram 아이디 (선택)</label><input id="instagram" name="instagram" maxlength="100"/></div>
     <button class="btn" type="submit">공연장 추가</button></form>
   </section>
-  <section class="detail-section"><h2>접수된 정보 수정 요청 ({requests.length}건)</h2>
+  <section class="detail-section" id="requests"><h2>접수된 정보 수정 요청 ({requestCount}건 · {requestPage}페이지)</h2>
     {requests.map(r=><div class="notice"><strong>{r.title} · {r.field}</strong><p>{r.note||'설명 없음'}</p><form action="/api/admin/resolve" method="POST"><input type="hidden" name="id" value={r.id}/><button class="btn" type="submit">처리 완료</button></form></div>)}
-    {requests.length===0&&<p>대기 중인 수정 요청이 없습니다.</p>}
+    {requests.length===0&&<p>이 페이지에 대기 중인 수정 요청이 없습니다.</p>}
+    <nav class="admin-nav" aria-label="수정 요청 페이지">
+      {requestPage>1&&<a class="btn" href={requestPageLink(requestPage-1)}>이전</a>}
+      <span>{requestPage} / {Math.max(1,Math.ceil(requestCount/requestPageSize))} 페이지</span>
+      {requestPage*requestPageSize<requestCount&&<a class="btn" href={requestPageLink(requestPage+1)}>다음</a>}
+    </nav>
   </section>
 </Base>
