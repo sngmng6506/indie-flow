@@ -3,21 +3,40 @@ import Base from '../../layouts/Base.astro';
 import { isAdmin } from '../../lib/auth';
 import { db } from '../../lib/db';
 if(!isAdmin(Astro.cookies)) return Astro.redirect('/admin/login');
-const events=await db()`SELECT e.id,e.title,e.starts_at,e.status,v.name AS venue_name FROM events e JOIN venues v ON v.id=e.venue_id ORDER BY e.created_at DESC LIMIT 200`;
+const allowedStatuses=['all','draft','pending','published','hidden'] as const;
+const statusParam=Astro.url.searchParams.get('status')||'all';
+const status=allowedStatuses.find(s=>s===statusParam)||'all';
+const pageParam=Number(Astro.url.searchParams.get('page')||'1');
+const page=Number.isSafeInteger(pageParam)&&pageParam>0?Math.min(pageParam,100000):1;
+const perPage=50;
+const offset=(page-1)*perPage;
+const totals=await db()`SELECT status,count(*)::int AS count FROM events GROUP BY status`;
+const total=totals.reduce((sum,r)=>sum+Number(r.count),0);
+const filteredTotal=status==='all'?total:Number(totals.find(r=>r.status===status)?.count||0);
+const events=await db()`SELECT e.id,e.title,e.starts_at,e.status,v.name AS venue_name FROM events e JOIN venues v ON v.id=e.venue_id WHERE (${status}='all' OR e.status=${status}) ORDER BY e.created_at DESC,e.id DESC LIMIT ${perPage} OFFSET ${offset}`;
+const pageLink=(p:number,s=status)=>'/admin?status='+s+'&page='+p;
 const venues=await db()`SELECT id,name FROM venues ORDER BY name`;
 const requests=await db()`SELECT r.id,r.field,r.note,r.created_at,e.title FROM edit_requests r JOIN events e ON e.id=r.event_id WHERE NOT r.resolved ORDER BY r.created_at DESC LIMIT 30`;
 const message=Astro.url.searchParams.get('message');
 const statusNames:Record<string,string>={draft:'초안',pending:'검수 대기',published:'게시됨',hidden:'비공개'};
-const pending=events.filter(e=>e.status==='pending').length;
-const published=events.filter(e=>e.status==='published').length;
+const pending=Number(totals.find(r=>r.status==='pending')?.count||0);
+const published=Number(totals.find(r=>r.status==='published')?.count||0);
 ---
 <Base title="운영자 대시보드" noindex><h1>공연 운영</h1>
   <nav class="admin-nav"><a class="btn" href="/admin/events/new">공연 등록</a><a class="btn" href="/admin/import">JSON 가져오기</a><a class="btn" href="#venue">공연장 추가</a><form action="/api/admin/logout" method="POST"><button class="btn" type="submit">로그아웃</button></form></nav>
   {message&&<p class="notice">{message==='saved'?'저장했습니다.':message==='venue'?'공연장을 추가했습니다.':message==='resolved'?'수정 요청을 처리했습니다.':'작업을 처리하지 못했습니다.'}</p>}
-  <p class="notice">현재 공연 {events.length}건 · 검수 대기 <strong>{pending}건</strong> · 게시 중 {published}건</p>
-  <h2>공연 ({events.length}건 최근순)</h2>
+  <p class="notice">전체 공연 {total}건 · 검수 대기 <strong>{pending}건</strong> · 게시 중 {published}건</p>
+  <h2>공연 ({filteredTotal}건 · {page}페이지)</h2>
+  <nav class="admin-nav" aria-label="공연 상태 필터">
+    {allowedStatuses.map(s=><a href={pageLink(1,s)} aria-current={status===s?'page':undefined}>{s==='all'?'전체':statusNames[s]} ({s==='all'?total:Number(totals.find(r=>r.status===s)?.count||0)})</a>)}
+  </nav>
   <div class="table-scroll"><table class="admin-table"><thead><tr><th>공연</th><th>공연장</th><th>날짜</th><th>상태</th><th>수정</th></tr></thead><tbody>{events.map(e=><tr><td>{e.title}</td><td>{e.venue_name}</td><td>{new Date(e.starts_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})}</td><td><span class="pill">{statusNames[String(e.status)]||e.status}</span></td><td><a href={`/admin/events/${e.id}`}>편집</a></td></tr>)}</tbody></table></div>
-  {events.length===0&&<p class="muted">등록된 공연이 없습니다.</p>}
+  {events.length===0&&<p class="muted">해당 조건의 공연이 없습니다.</p>}
+  <nav class="admin-nav" aria-label="공연 페이지">
+    {page>1&&<a class="btn" href={pageLink(page-1)}>이전</a>}
+    <span>{page} / {Math.max(1,Math.ceil(filteredTotal/perPage))} 페이지</span>
+    {page*perPage<filteredTotal&&<a class="btn" href={pageLink(page+1)}>다음</a>}
+  </nav>
   <section id="venue" class="detail-section" style="margin-top:35px"><h2>공연장 등록</h2><p class="small muted">기존 공연장 {venues.length}곳 · 중복 생성에 유의하세요.</p>
   {venues.length>0&&<div class="notice"><strong>등록된 공연장 ID</strong><p class="small">{venues.map(v=>`${v.name} (#${v.id})`).join(" · ")}</p></div>}<form method="POST" action="/api/admin/venues">
     <div class="field"><label for="vname">공연장 이름</label><input id="vname" name="name" required maxlength="120"/></div>
