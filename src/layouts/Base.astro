@@ -1,8 +1,11 @@
 ---
-interface Props { title: string; description?: string; lang?: 'ko' | 'en'; noindex?: boolean; }
-const { title, description = '홍대·합정·상수·연남에서 오늘 가까운 인디 공연을 찾아보세요.', lang = 'ko', noindex = false } = Astro.props;
+interface Props { title: string; description?: string; lang?: 'ko' | 'en'; noindex?: boolean; image?: string | null; }
+const { title, description = '홍대·합정·상수·연남에서 오늘 가까운 인디 공연을 찾아보세요.', lang = 'ko', noindex = false, image = null } = Astro.props;
 const en=lang==='en';
-const canonical = new URL(Astro.url.pathname, import.meta.env.SITE || Astro.url.origin).toString();
+const site=import.meta.env.PUBLIC_SITE_URL || import.meta.env.SITE || Astro.url.origin;
+const canonical = new URL(Astro.url.pathname, site).toString();
+const descriptionText=description || (en?'Find independent live music shows near Hongdae, Hapjeong and Sangsu in Seoul.':'홍대·합정·상수·연남에서 오늘 가까운 인디 공연을 찾아보세요.');
+const imageUrl=image?new URL(image,site).toString():null;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -11,7 +14,21 @@ const canonical = new URL(Astro.url.pathname, import.meta.env.SITE || Astro.url.
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#ECEBE7" />
   <title>{title} | {en?'Indie Flow':'인디플로우'}</title>
-  <meta name="description" content={description} />
+  <meta name="description" content={descriptionText} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={en?'Indie Flow':'인디플로우'} />
+  <meta property="og:locale" content={en?'en_US':'ko_KR'} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={descriptionText} />
+  <meta property="og:url" content={canonical} />
+  {imageUrl&&<meta property="og:image" content={imageUrl} />}
+  <meta name="twitter:card" content={imageUrl?'summary_large_image':'summary'} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={descriptionText} />
+  {imageUrl&&<meta name="twitter:image" content={imageUrl} />}
+  <link rel="alternate" hreflang="ko" href={canonical} />
+  <link rel="alternate" hreflang="en" href={canonical+'?lang=en'} />
+  <link rel="alternate" hreflang="x-default" href={canonical} />
   {noindex && <meta name="robots" content="noindex,nofollow" />}
   {!noindex && <link rel="canonical" href={canonical} />}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
