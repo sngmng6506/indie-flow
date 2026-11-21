@@ -1,0 +1,20 @@
+# Indie Flow (인디플로우)
+
+> Indie Flow lists publicly announced independent live music shows in Hongdae and nearby neighborhoods of Seoul, South Korea.
+
+## Official site
+- [Upcoming performances](https://indie-flow-production.up.railway.app/): Korean-language listings and date filters
+- [English listings](https://indie-flow-production.up.railway.app/?lang=en): English interface
+- [XML sitemap](https://indie-flow-production.up.railway.app/sitemap.xml): Published upcoming events
+
+## Coverage and interpretation
+- Primary area: Hongdae, Hapjeong, Sangsu and nearby Seoul neighborhoods.
+- Each event page includes available show title, date/time, venue, address, price, and a source link.
+- Information can change. Confirm cancellation, pricing and tickets at the linked original source.
+- Walking times are straight-line approximations, not actual pedestrian routing estimates.
+- Missing information does not mean a show is free, sold out or canceled.
+
+## Machine-readable information
+- Event detail pages include Schema.org MusicEvent structured data.
+- The sitemap lists published, upcoming event pages.
+- This document does not grant permission to scrape or republish third-party content.
