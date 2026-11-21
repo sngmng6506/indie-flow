@@ -1,4 +1,5 @@
 import {writeFile,mkdir,readFile} from 'node:fs/promises';
+import {dirname} from 'node:path';
 import {SOURCES,extractEvents,dedupe,type Candidate} from './collect-events-lib.ts';
 const MAX_BYTES=1_000_000;
 const timeout=12000;
@@ -35,7 +36,7 @@ const payload=importable.map(e=>({
 await mkdir('data',{recursive:true});
 await writeFile('data/collection-report.json',JSON.stringify({collectedAt:new Date().toISOString(),sources:report,candidates:unique,missingVenueMappings:missing.map(e=>e.venue)},null,2));
 if(!dryRun){
-  await mkdir(new URL('.',new URL(output,'file://'+process.cwd()+'/')).pathname,{recursive:true});
+  await mkdir(dirname(output),{recursive:true});
   await writeFile(output,JSON.stringify(payload,null,2));
 }
 console.log(JSON.stringify({sources:report,candidates:unique.length,importable:payload.length,missingVenueMappings:[...new Set(missing.map(e=>e.venue))],report:'data/collection-report.json',output:dryRun?null:output},null,2));
