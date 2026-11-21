@@ -1,6 +1,7 @@
 ---
 interface Props { title: string; description?: string; lang?: 'ko' | 'en'; noindex?: boolean; }
 const { title, description = '홍대·합정·상수·연남에서 오늘 가까운 인디 공연을 찾아보세요.', lang = 'ko', noindex = false } = Astro.props;
+const en=lang==='en';
 const canonical = new URL(Astro.url.pathname, import.meta.env.SITE || Astro.url.origin).toString();
 ---
 <!doctype html>
@@ -9,7 +10,7 @@ const canonical = new URL(Astro.url.pathname, import.meta.env.SITE || Astro.url.
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#ECEBE7" />
-  <title>{title} | 인디플로우</title>
+  <title>{title} | {en?'Indie Flow':'인디플로우'}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex,nofollow" />}
   {!noindex && <link rel="canonical" href={canonical} />}
@@ -20,9 +21,9 @@ const canonical = new URL(Astro.url.pathname, import.meta.env.SITE || Astro.url.
 </head>
 <body>
   <div class="wrap">
-    <header class="top"><a class="brand" href="/">인디플로우</a><span class="tagline">오늘 가까운 인디 공연</span></header>
+    <header class="top"><a class="brand" href={en?"/?lang=en":"/"}>{en?"INDIE FLOW":"인디플로우"}</a><span class="tagline">{en?"Live shows near Hongdae":"오늘 가까운 인디 공연"}</span></header>
     <main><slot /></main>
-    <footer><span>INDIE FLOW · 홍대와 인근 지역</span><a href="/admin">운영자</a></footer>
+    <footer><span>{en?'INDIE FLOW · Hongdae and nearby':'INDIE FLOW · 홍대와 인근 지역'}</span><a href="/admin">{en?'Admin':'운영자'}</a></footer>
   </div>
 </body>
 </html>
