@@ -45,3 +45,18 @@ export function publicEvent(e: any, origin = hongdae) {
     poster:e.poster_approved && e.poster_url?{url:e.poster_url,alt:`${e.title} · ${e.venue_name} 포스터`}:null
   };
 }
+
+export type WalkFilter = '10' | '15' | '20' | '30' | 'all';
+export function parseWalkFilter(value: string | null): WalkFilter {
+  return value === '10' || value === '15' || value === '20' || value === '30' || value === 'all' ? value : '15';
+}
+export function filterByWalk<T extends {walkMinutes: number | null}>(events: T[], walk: WalkFilter): T[] {
+  return walk === 'all' ? events : events.filter(event => event.walkMinutes !== null && event.walkMinutes <= Number(walk));
+}
+export function resolveOrigin(latValue: string | null, lngValue: string | null) {
+  if (latValue === null || lngValue === null || latValue.trim() === '' || lngValue.trim() === '') return {origin:hongdae,near:false};
+  const lat=Number(latValue),lng=Number(lngValue);
+  const valid=Number.isFinite(lat)&&Number.isFinite(lng)&&lat>=-90&&lat<=90&&lng>=-180&&lng<=180;
+  const near=valid&&walkMinutes(hongdae,{lat,lng})<=30;
+  return {origin:near?{lat,lng,name:'내 위치'}:hongdae,near};
+}
