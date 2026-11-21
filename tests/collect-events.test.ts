@@ -1,0 +1,22 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {extractEvents,dedupe,seoulLocal,jsonLdBlocks} from '../scripts/collect-events-lib';
+const source={name:'언플러그드 홍대',venue:'언플러그드 홍대',url:'https://www.unplugged-hongdae.com/concert'};
+test('extracts explicitly zoned event with venue and safe URL',()=>{
+  const html='<script type="application/ld+json">'+JSON.stringify({'@context':'https://schema.org','@type':'MusicEvent',name:'Sample show',startDate:'2026-11-25T19:00:00+09:00',location:{name:'언플러그드 홍대'},url:'https://example.com/show',offers:{price:'25,000',url:'https://example.com/ticket'}})+'</script>';
+  const events=extractEvents(html,source);
+  assert.equal(events.length,1);
+  assert.equal(events[0].startsAt,'2026-11-25T19:00');
+  assert.equal(events[0].doorPrice,25000);
+  assert.equal(events[0].ticketUrl,'https://example.com/ticket');
+  assert.equal(dedupe([...events,...events]).length,1);
+});
+test('rejects timezone-free, unrelated venue and malformed data',()=>{
+  const html='<script type="application/ld+json">'+JSON.stringify({'@graph':[
+    {'@type':'MusicEvent',name:'Unknown time',startDate:'2026-11-25T19:00',location:{name:'언플러그드 홍대'}},
+    {'@type':'MusicEvent',name:'Different venue',startDate:'2026-11-25T19:00:00+09:00',location:{name:'서울 올림픽공원'}}
+  ]})+'</script>';
+  assert.equal(extractEvents(html,source).length,0);
+  assert.equal(seoulLocal('2026-11-25T19:00'),null);
+  assert.equal(jsonLdBlocks('<script type="application/ld+json">{invalid}</script>').length,0);
+});
