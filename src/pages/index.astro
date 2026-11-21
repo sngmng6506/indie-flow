@@ -42,7 +42,7 @@ const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`+(near?`&l
   </div>
   <p class="small muted" id="origin-message">{near?(en?'Based on your location.':'내 위치를 기준으로 표시합니다.'):(en?'Based on Hongik Univ. Station.':'홍대입구역을 기준으로 표시합니다.')}</p>
   <div id="events" class="cards">
-    {visible.map(e=><a class="card" href={`/events/${e.id}`} data-walk={e.walkMinutes??''}>
+    {visible.map(e=><a class="card" href={`/events/${e.id}?lang=${language}`} data-walk={e.walkMinutes??''}>
       {e.poster&&<img class="poster" src={e.poster.url} alt={e.poster.alt} loading="lazy"/>}
       <div class="card-body"><div class="rowline"><span class="time">{timeFmt.format(new Date(String(e.startsAt)))}</span><span class="small muted">{e.walkMinutes===null?(en?'Distance unknown':'거리 정보 없음'):(en?`~${e.walkMinutes} min walk`:`도보 약 ${e.walkMinutes}분`)}</span></div>
       <h2>{e.title}</h2><p>{e.venue.name}</p><p class="small muted">{e.doorPrice===null?(en?'Price not listed':'가격 미공지'):`${Number(e.doorPrice).toLocaleString('ko-KR')}원`}</p></div>
