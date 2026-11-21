@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import {filterByWalk,getCounts,getEvents,isDate,parseWalkFilter,publicEvent,resolveOrigin,seoulDate} from '../lib/events';
+import {filterByWalk,getCounts,getEvents,isDate,parseWalkFilter,publicEvent,seoulDate,hongdae} from '../lib/events';
 const date=Astro.url.searchParams.get('date')||seoulDate();
 const selected=isDate(date)?date:seoulDate();
 const language=Astro.url.searchParams.get('lang')==='en'?'en':'ko';
@@ -8,15 +8,14 @@ const walk=parseWalkFilter(Astro.url.searchParams.get('walk'));
 const dateCounts=await getCounts(seoulDate(),14);
 const countMap=new Map(dateCounts.map(c=>[c.date,Number(c.count)]));
 const dates=Array.from({length:14},(_,i)=>{const d=new Date(seoulDate()+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10)});
-const latValue=Astro.url.searchParams.get('lat'),lngValue=Astro.url.searchParams.get('lng');
-const {origin,near}=resolveOrigin(latValue,lngValue);
-const events=(await getEvents(selected)).map(e=>publicEvent(e,origin));
+const rawEvents=await getEvents(selected);
+const events=rawEvents.map(e=>publicEvent(e,hongdae));
 const visible=filterByWalk(events,walk);
 const farther=events.length-visible.length;
 const en=language==='en';
 const dateFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{month:'long',day:'numeric',weekday:'short',timeZone:'Asia/Seoul'});
 const timeFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
-const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`+(near?`&lat=${encodeURIComponent(latValue!)}&lng=${encodeURIComponent(lngValue!)}`:'');
+const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`;
 ---
 <Base title={en?'Live indie shows near Hongdae':'오늘의 인디 공연'} description="홍대·합정·상수·연남·망원·신촌의 인디 공연 일정과 입장료, 공연장 위치를 확인하세요." lang={language}>
   <h1 class="hero">{en?'Live indie shows near you':'오늘 걸어갈 수 있는 공연'}</h1>
@@ -24,14 +23,13 @@ const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`+(near?`&l
     {dates.map(d=><a href={link(d)} aria-current={selected===d?'date':undefined}><span class="small">{dateFmt.format(new Date(d+'T12:00:00Z')).split(' ')[0]}</span><strong>{Number(d.slice(-2))}</strong><span class="small">{countMap.get(d)||0}{en?' shows':'개'}</span></a>)}
   </nav>
   <div class="locator">
-    <button id="show-settings" type="button" aria-expanded="false" aria-controls="settings">{near?(en?'My location':'내 위치'):(en?'Hongik Univ. Station':'홍대입구역')} · {walk==='all'?(en?'All distances':'거리 상관없이 전체'): (en?`Within ~${walk} min walk`:`도보 약 ${walk}분 이내`)} ▾</button>
+    <button id="show-settings" type="button" aria-expanded="false" aria-controls="settings">{en?'Hongik Univ. Station':'홍대입구역'} · {walk==='all'?(en?'All distances':'거리 상관없이 전체'): (en?`Within ~${walk} min walk`:`도보 약 ${walk}분 이내`)} ▾</button>
     <div class="tools"><button class="underlink" id="use-location" type="button">{en?'Use my location':'내 위치로'}</button><a class="small" href={link(selected).replace('lang='+language,'lang='+(en?'ko':'en'))}>{en?'한국어':'English'}</a></div>
   </div>
   <div id="settings" class="sheet" hidden>
     <form method="GET" action="/">
       <input type="hidden" name="date" value={selected}/>
       <input type="hidden" name="lang" value={language}/>
-      {near&&<><input type="hidden" name="lat" value={latValue}/><input type="hidden" name="lng" value={lngValue}/></>}
       <label for="walk">{en?'Walking distance':'걷는 시간'}</label>
       <select id="walk" name="walk">
         {['10','15','20','30','all'].map(v=><option value={v} selected={v===walk}>{v==='all'?(en?'All shows':'전체 공연'):(en?`${v} minutes`:`${v}분`)}</option>)}
@@ -40,28 +38,76 @@ const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`+(near?`&l
     </form>
     <p class="small muted">{en?'Walking times are estimated from straight-line distances and may differ from actual routes.':'거리 시간은 직선거리로 계산한 추정치입니다. 실제 이동 시간과 다를 수 있습니다.'}</p>
   </div>
-  <p class="small muted" id="origin-message">{near?(en?'Based on your location.':'내 위치를 기준으로 표시합니다.'):(en?'Based on Hongik Univ. Station.':'홍대입구역을 기준으로 표시합니다.')}</p>
+  <p class="small muted" id="origin-message">{en?'Based on Hongik Univ. Station.':'홍대입구역을 기준으로 표시합니다.'}</p>
   <div id="events" class="cards">
-    {visible.map(e=><a class="card" href={`/events/${e.id}?lang=${language}`} data-walk={e.walkMinutes??''}>
+    {events.map((e,i)=><a class="card" href={`/events/${e.id}?lang=${language}`} hidden={!visible.includes(e)} data-walk={e.walkMinutes??''} data-lat={rawEvents[i].lat??''} data-lng={rawEvents[i].lng??''}>
       {e.poster&&<img class="poster" src={e.poster.url} alt={e.poster.alt} loading="lazy"/>}
-      <div class="card-body"><div class="rowline"><span class="time">{timeFmt.format(new Date(String(e.startsAt)))}</span><span class="small muted">{e.walkMinutes===null?(en?'Distance unknown':'거리 정보 없음'):(en?`~${e.walkMinutes} min walk`:`도보 약 ${e.walkMinutes}분`)}</span></div>
+      <div class="card-body"><div class="rowline"><span class="time">{timeFmt.format(new Date(String(e.startsAt)))}</span><span class="small muted" data-distance>{e.walkMinutes===null?(en?'Distance unknown':'거리 정보 없음'):(en?`~${e.walkMinutes} min walk`:`도보 약 ${e.walkMinutes}분`)}</span></div>
       <h2>{e.title}</h2><p>{e.venue.name}</p><p class="small muted">{e.doorPrice===null?(en?'Price not listed':'가격 미공지'):`${Number(e.doorPrice).toLocaleString('ko-KR')}원`}</p></div>
     </a>)}
   </div>
-  {visible.length===0&&<section class="empty"><h2>{en?'No shows found':'조건에 맞는 공연이 없습니다'}</h2><p>{en?'Try viewing all distances or another day.':'거리를 늘리거나 다른 날짜를 선택해 보세요.'}</p><a class="btn" href={link(selected,'all')}>{en?'View all shows':'전체 공연 보기'}</a></section>}
-  {farther>0&&<p><a class="underlink" href={link(selected,'all')}>{en?`See ${farther} farther shows`:`더 먼 공연 ${farther}개도 보기`}</a></p>}
+  <section class="empty" id="empty-state" hidden={visible.length!==0}><h2>{en?'No shows found':'조건에 맞는 공연이 없습니다'}</h2><p>{en?'Try viewing all distances or another day.':'거리를 늘리거나 다른 날짜를 선택해 보세요.'}</p><a class="btn" href={link(selected,'all')}>{en?'View all shows':'전체 공연 보기'}</a></section>
+  <p id="farther-wrap" hidden={farther===0}><a class="underlink" id="farther-link" href={link(selected,'all')}>{en?`See ${farther} farther shows`:`더 먼 공연 ${farther}개도 보기`}</a></p>
 </Base>
 <script>
-  const trigger=document.querySelector<HTMLButtonElement>('#show-settings');
+  // Coordinates remain in sessionStorage and are never sent to this site's server.
+  const en=document.documentElement.lang==='en';
+  const station={lat:37.5572,lng:126.9245};
+  const storageKey='indie-flow-location';
+  const params=new URL(location.href);
+  if(params.searchParams.has('lat')||params.searchParams.has('lng')){
+    params.searchParams.delete('lat');params.searchParams.delete('lng');
+    history.replaceState(null,'',params.pathname+params.search+params.hash);
+  }
+  const cards=Array.from(document.querySelectorAll<HTMLAnchorElement>('#events .card'));
+  const walk=new URL(location.href).searchParams.get('walk')||'15';
+  const limit=walk==='all'?Infinity:Number(walk);
+  const message=document.querySelector<HTMLElement>('#origin-message');
+  const settingsButton=document.querySelector<HTMLButtonElement>('#show-settings');
   const sheet=document.querySelector<HTMLElement>('#settings');
-  trigger?.addEventListener('click',()=>{if(!sheet)return;sheet.hidden=!sheet.hidden;trigger.setAttribute('aria-expanded',String(!sheet.hidden));});
+  const empty=document.querySelector<HTMLElement>('#empty-state');
+  const fartherWrap=document.querySelector<HTMLElement>('#farther-wrap');
+  const fartherLink=document.querySelector<HTMLAnchorElement>('#farther-link');
+  const valid=(p:{lat:number,lng:number})=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<=90&&Math.abs(p.lng)<=180;
+  const minutes=(a:{lat:number,lng:number},b:{lat:number,lng:number})=>{
+    const rad=Math.PI/180;
+    const y=(b.lat-a.lat)*111195;
+    const x=(b.lng-a.lng)*111195*Math.cos((a.lat+b.lat)/2*rad);
+    return Math.ceil(Math.hypot(x,y)/75);
+  };
+  const render=(user:{lat:number,lng:number}|null)=>{
+    const near=user&&valid(user)&&minutes(station,user)<=30;
+    const origin=near?user:station;
+    let shown=0;
+    for(const card of cards){
+      const lat=card.dataset.lat,lng=card.dataset.lng;
+      const venue=lat!==undefined&&lat!==''&&lng!==undefined&&lng!==''?{lat:Number(lat),lng:Number(lng)}:null;
+      const distance=venue&&valid(venue)?minutes(origin,venue):null;
+      card.dataset.walk=distance===null?'':String(distance);
+      const text=card.querySelector<HTMLElement>('[data-distance]');
+      if(text)text.textContent=distance===null?(en?'Distance unknown':'거리 정보 없음'):(en?`~${distance} min walk`:`도보 약 ${distance}분`);
+      card.hidden=distance===null?walk!=='all':distance>limit;
+      if(!card.hidden)shown++;
+    }
+    if(empty)empty.hidden=shown!==0;
+    const farther=cards.length-shown;
+    if(fartherWrap)fartherWrap.hidden=farther===0;
+    if(fartherLink)fartherLink.textContent=en?`See ${farther} farther shows`:`더 먼 공연 ${farther}개도 보기`;
+    if(message)message.textContent=near?(en?'Based on your location.':'내 위치를 기준으로 표시합니다.'):(en?'Based on Hongik Univ. Station.':'홍대입구역을 기준으로 표시합니다.');
+    if(settingsButton)settingsButton.textContent=(near?(en?'My location':'내 위치'):(en?'Hongik Univ. Station':'홍대입구역'))+' · '+(walk==='all'?(en?'All distances':'거리 상관없이 전체'):(en?`Within ~${walk} min walk`:`도보 약 ${walk}분 이내`))+' ▾';
+  };
+  try {
+    const stored=sessionStorage.getItem(storageKey);
+    if(stored){const value=JSON.parse(stored);if(valid(value))render(value);}
+  }catch{ /* Storage may be disabled. Station fallback remains usable. */ }
+  settingsButton?.addEventListener('click',()=>{if(!sheet)return;sheet.hidden=!sheet.hidden;settingsButton.setAttribute('aria-expanded',String(!sheet.hidden));});
   document.querySelector('#use-location')?.addEventListener('click',()=>{
-    if(!navigator.geolocation){alert(document.documentElement.lang==='en'?'Location is not supported.':'위치 기능을 지원하지 않습니다.');return;}
+    if(!navigator.geolocation){alert(en?'Location is not supported.':'위치 기능을 지원하지 않습니다.');return;}
     navigator.geolocation.getCurrentPosition(p=>{
-      const next=new URL(location.href);
-      next.searchParams.set('lat',String(p.coords.latitude));
-      next.searchParams.set('lng',String(p.coords.longitude));
-      location.assign(next.toString());
-    },()=>alert(document.documentElement.lang==='en'?'Location unavailable. Using Hongik Univ. Station.':'위치 권한을 허용하지 않아 역 기준을 유지합니다.'));
+      const point={lat:p.coords.latitude,lng:p.coords.longitude};
+      if(!valid(point)||minutes(station,point)>30){alert(en?'Outside the supported area. Using Hongik Univ. Station.':'지원 지역 밖이므로 홍대입구역 기준을 유지합니다.');return;}
+      try{sessionStorage.setItem(storageKey,JSON.stringify(point));}catch{}
+      render(point);
+    },()=>alert(en?'Location unavailable. Using Hongik Univ. Station.':'위치 권한을 허용하지 않아 역 기준을 유지합니다.'));
   });
 </script>
