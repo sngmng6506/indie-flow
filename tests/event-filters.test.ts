@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae} from '../src/lib/events';
+import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes} from '../src/lib/events';
 
 test('distance filtering excludes unknown distances except for all',()=>{
   const items=[{walkMinutes:5},{walkMinutes:16},{walkMinutes:null}];
@@ -18,5 +18,24 @@ test('location validation rejects missing, malformed and remote coordinates',()=
     assert.equal(result.near,false);
     assert.deepEqual(result.origin,hongdae);
   }
+  assert.equal(resolveOrigin(String(hongdae.lat),String(hongdae.lng)).near,true);
+});
+
+test('date parsing rejects invalid calendar dates',()=>{
+  assert.equal(isDate('2026-11-21'),true);
+  assert.equal(isDate('2026-02-30'),false);
+  assert.equal(isDate('2026-13-01'),false);
+  assert.equal(isDate('2026-11-21T10:00'),false);
+});
+test('public event hides unapproved posters and handles missing venue coordinates',()=>{
+  const event={id:1,venue_id:2,title:'Test show',starts_at:'2026-11-21T10:00:00Z',venue_name:'Test venue',lat:null,lng:null,poster_url:'https://example.com/poster.jpg',poster_approved:false,summary:'',door_price:10000};
+  const result=publicEvent(event);
+  assert.equal(result.walkMinutes,null);
+  assert.equal(result.poster,null);
+  assert.equal(filterByWalk([result],'15').length,0);
+  assert.equal(filterByWalk([result],'all').length,1);
+});
+test('distance calculation is stable for same location and nearby venue',()=>{
+  assert.equal(walkMinutes(hongdae,hongdae),0);
   assert.equal(resolveOrigin(String(hongdae.lat),String(hongdae.lng)).near,true);
 });
