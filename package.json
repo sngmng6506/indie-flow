@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "node scripts/bootstrap.mjs",
     "check": "astro check",
     "test": "node --import tsx --test tests/*.test.ts",
     "db:migrate": "node scripts/migrate.mjs",
