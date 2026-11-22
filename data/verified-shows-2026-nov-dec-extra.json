@@ -1,0 +1,450 @@
+{
+  "batchId": "indiego-hongdae-20261122-extended-v1",
+  "verifiedOn": "2026-11-22",
+  "posterPolicy": "source-linked remote image URLs; not proof of copyright license or hotlink permission",
+  "venues": [
+    {
+      "name": "언플러그드 라운지",
+      "address": "서울 마포구 와우산로29길 15 3층",
+      "lat": 37.5547926,
+      "lng": 126.92887
+    },
+    {
+      "name": "롤링홀",
+      "address": "서울 마포구 어울마당로 35 신보빌딩 지하1층",
+      "lat": 37.5484855,
+      "lng": 126.9201438
+    },
+    {
+      "name": "프리버드",
+      "address": "서울 마포구 와우산로17길 19-22 DO빌딩 지하1층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "AOR",
+      "address": "서울 마포구 와우산로 156 지하1층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "VICTIM",
+      "address": "서울 마포구 와우산로 53 지하",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "생기스튜디오",
+      "address": "서울 마포구 와우산로 137 5층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "스페이스 브릭",
+      "address": "서울 마포구 잔다리로 31 지하2층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "KT&G상상마당 홍대",
+      "address": "서울 마포구 어울마당로 65",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "채널1969",
+      "address": "서울 마포구 연희로 35",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "클럽샤프",
+      "address": "서울 마포구 동교로 63 지하1층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "고요의 방",
+      "address": "서울 마포구 와우산로29길 14-10",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "무신사 개러지",
+      "address": "서울 마포구 잔다리로 32 서문빌딩 지하1층",
+      "lat": null,
+      "lng": null
+    },
+    {
+      "name": "스페이스한강",
+      "address": "서울 마포구 와우산로 128 지하1층",
+      "lat": null,
+      "lng": null
+    }
+  ],
+  "events": [
+    {
+      "venue": "프리버드",
+      "title": "CLUB FREEBIRD LIVE",
+      "startsAt": "2026-11-25T19:30",
+      "advancePrice": null,
+      "doorPrice": 25000,
+      "lineup": "나이테, 루즌도어즈, 신서울",
+      "sourceUrl": "https://www.indiego.co.kr/events/1842-club-freebird-live",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794350792399-u75cws-medium.webp"
+    },
+    {
+      "venue": "AOR",
+      "title": "A.O.R CRAZY THURSDAY",
+      "startsAt": "2026-11-26T19:30",
+      "advancePrice": null,
+      "doorPrice": 35000,
+      "lineup": "일루반, 에브리데이먼데이, 플릿, 블루화, 다다다",
+      "sourceUrl": "https://www.indiego.co.kr/events/1741-a-o-r-crazy-thursday",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793855944725-4wztp-medium.webp"
+    },
+    {
+      "venue": "VICTIM",
+      "title": "ROCKERS ON FRIDAY vol.111",
+      "startsAt": "2026-11-27T19:30",
+      "advancePrice": null,
+      "doorPrice": 30000,
+      "lineup": "시네마스퀘어, 콘트라젤리, 이그나이트, 불지옥서퍼즈",
+      "sourceUrl": "https://www.indiego.co.kr/events/1508-rockers-on-friday-vol-111",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1792376983355-6s9fix-medium.webp"
+    },
+    {
+      "venue": "생기스튜디오",
+      "title": "Time for Tolerance – The Fire",
+      "startsAt": "2026-11-27T20:00",
+      "advancePrice": 25000,
+      "doorPrice": 30000,
+      "lineup": "와이프 마테리얼, 나비춤, 쾅프로그램, 비지타 큐",
+      "sourceUrl": "https://www.indiego.co.kr/events/1709-time-for-tolerance-the-fire",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/35075540-d31f-486e-8d5f-51ad1901d215/1793633517685-oxxle-medium.webp"
+    },
+    {
+      "venue": "프리버드",
+      "title": "HIDE & SEEK",
+      "startsAt": "2026-11-28T18:30",
+      "advancePrice": 35000,
+      "doorPrice": 35000,
+      "lineup": "아스라이, 칵투스, 웬즈데이, 천둥오리, 플릿",
+      "sourceUrl": "https://www.indiego.co.kr/events/1843-hide-seek",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794350825545-d8uir-medium.webp"
+    },
+    {
+      "venue": "스페이스 브릭",
+      "title": "Fake Product vol.6",
+      "startsAt": "2026-11-29T18:00",
+      "advancePrice": 55000,
+      "doorPrice": 66000,
+      "lineup": "다브다, 녹이녹, 다플루토",
+      "sourceUrl": "https://www.indiego.co.kr/events/1724-fake-product-vol-6",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/97ac89cb-7a87-41d4-90bc-cd1484601ce3/1793714599946-kddu7-medium.webp"
+    },
+    {
+      "venue": "KT&G상상마당 홍대",
+      "title": "Best Friends Forever Festival 2026",
+      "startsAt": "2026-11-29T18:30",
+      "advancePrice": 66000,
+      "doorPrice": null,
+      "lineup": "단편선 순간들, 전기뱀장어, 기쿠하시, 김사월",
+      "sourceUrl": "https://www.indiego.co.kr/events/1652-best-friends-forever-festival-2026",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793114580352-3769p-medium.webp"
+    },
+    {
+      "venue": "프리버드",
+      "title": "NO TURNING BACK",
+      "startsAt": "2026-12-04T19:00",
+      "advancePrice": 30000,
+      "doorPrice": 30000,
+      "lineup": "노백, 에일, 프리윌, 로프리스, 산사람",
+      "sourceUrl": "https://www.indiego.co.kr/events/1898-no-turning-back",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794695263378-0uc0gs-medium.webp"
+    },
+    {
+      "venue": "채널1969",
+      "title": "잡초쇼 Vol.5",
+      "startsAt": "2026-12-05T17:00",
+      "advancePrice": 30000,
+      "doorPrice": 30000,
+      "lineup": "웰컴투초초랜드, 사공, 피치트럭하이재커스, 미미시스터즈, 오이스터즈, 로만 인 케이지, 레이지본, 산미치광이",
+      "sourceUrl": "https://www.indiego.co.kr/events/1654-%EC%9E%A1%EC%B4%88%EC%87%BC-vol-5",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793140560878-4pd7j-medium.webp"
+    },
+    {
+      "venue": "클럽샤프",
+      "title": "VERY FIRST LAST MONTH EVER",
+      "startsAt": "2026-12-05T18:00",
+      "advancePrice": 30000,
+      "doorPrice": 35000,
+      "lineup": "더리셋터즈, 서울돌망치, 왓에버댓민즈, 18 피버스, 스타트라인, 러스트러블",
+      "sourceUrl": "https://www.indiego.co.kr/events/1845-very-first-last-month-ever",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794357891604-ek7wpb-medium.webp"
+    },
+    {
+      "venue": "KT&G상상마당 홍대",
+      "title": "MINT FESTA VOL.89",
+      "startsAt": "2026-12-06T17:00",
+      "advancePrice": null,
+      "doorPrice": 66000,
+      "lineup": "김승주, 리브아워티어스, 리도어",
+      "sourceUrl": "https://www.indiego.co.kr/events/1366-mint-festa-vol-89",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1790846285680-wolutj-medium.webp"
+    },
+    {
+      "venue": "VICTIM",
+      "title": "NIGHT OF VICTIM vol.113",
+      "startsAt": "2026-12-06T18:30",
+      "advancePrice": null,
+      "doorPrice": 30000,
+      "lineup": "시아나, 나우, 퀸젤",
+      "sourceUrl": "https://www.indiego.co.kr/events/1891-night-of-victim-vol-113",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794627258272-mr7t-medium.webp"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "아지트 14번지",
+      "startsAt": "2026-12-09T19:30",
+      "advancePrice": 27000,
+      "doorPrice": 32000,
+      "lineup": "오륜구동, 가로인들",
+      "sourceUrl": "https://www.indiego.co.kr/events/1904-%EC%95%84%EC%A7%80%ED%8A%B8-14%EB%B2%88%EC%A7%80",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794783257101-9dtled-medium.webp"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "항해",
+      "startsAt": "2026-12-10T19:30",
+      "advancePrice": 25000,
+      "doorPrice": 30000,
+      "lineup": "블루화, 난파란",
+      "sourceUrl": "https://www.indiego.co.kr/events/1918-%ED%95%AD%ED%95%B4",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794873136369-sjc87c-medium.webp"
+    },
+    {
+      "venue": "VICTIM",
+      "title": "ROCKERS ON FRIDAY vol.113",
+      "startsAt": "2026-12-11T19:00",
+      "advancePrice": null,
+      "doorPrice": 30000,
+      "lineup": "일곱시막차, 트리케라톱스, 벙커프로덕션, 퍼퓨라",
+      "sourceUrl": "https://www.indiego.co.kr/events/1890-rockers-on-friday-vol-113",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794626952654-4q3q9-medium.webp"
+    },
+    {
+      "venue": "생기스튜디오",
+      "title": "생기스튜디오 액막이굿",
+      "startsAt": "2026-12-11T20:00",
+      "advancePrice": 35000,
+      "doorPrice": 40000,
+      "lineup": "오티스 림, 추다혜차지스, 우륵과 풍각쟁이들",
+      "sourceUrl": "https://www.indiego.co.kr/events/1925-%EC%83%9D%EA%B8%B0%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EC%95%A1%EB%A7%89%EC%9D%B4%EA%B5%BF",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/35075540-d31f-486e-8d5f-51ad1901d215/1794904842471-7gnbhp-medium.webp"
+    },
+    {
+      "venue": "고요의 방",
+      "title": "생(生) : 여덟 번째 방",
+      "startsAt": "2026-12-12T18:30",
+      "advancePrice": 25000,
+      "doorPrice": 28000,
+      "lineup": "원니",
+      "sourceUrl": "https://www.indiego.co.kr/events/1861-%EC%83%9D-%E7%94%9F-%EC%97%AC%EB%8D%9F-%EB%B2%88%EC%A7%B8-%EB%B0%A9",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794482258556-27smdp-medium.webp"
+    },
+    {
+      "venue": "VICTIM",
+      "title": "NIGHT OF VICTIM vol.114",
+      "startsAt": "2026-12-13T18:30",
+      "advancePrice": null,
+      "doorPrice": 30000,
+      "lineup": "서틴칠드런, 오피아, RAINFALLTHEORY, 사생악단",
+      "sourceUrl": "https://www.indiego.co.kr/events/1893-night-of-victim-vol-114",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794627364149-g53x5i-medium.webp"
+    },
+    {
+      "venue": "무신사 개러지",
+      "title": "2026 ASIAN POP STAGE Vol.2",
+      "startsAt": "2026-12-16T19:30",
+      "advancePrice": null,
+      "doorPrice": 0,
+      "lineup": "이디오테잎, Pasocom Music Club, Azikazin Magic World",
+      "sourceUrl": "https://www.indiego.co.kr/events/1901-2026-asian-pop-stage-vol-2",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794734974661-90k2ak-medium.webp"
+    },
+    {
+      "venue": "스페이스한강",
+      "title": "먼데이프로젝트 IN 라이브클럽 : LOVE IS ALL",
+      "startsAt": "2026-12-17T20:00",
+      "advancePrice": 33000,
+      "doorPrice": null,
+      "lineup": "오드",
+      "sourceUrl": "https://www.indiego.co.kr/events/1959-%EB%A8%BC%EB%8D%B0%EC%9D%B4%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-in-%EB%9D%BC%EC%9D%B4%EB%B8%8C%ED%81%B4%EB%9F%BD-love-is-all",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1795129319820-a4fhq9-medium.webp"
+    },
+    {
+      "venue": "KT&G상상마당 홍대",
+      "title": "상상 and the Numbers",
+      "startsAt": "2026-12-20T18:00",
+      "advancePrice": 69000,
+      "doorPrice": 77000,
+      "lineup": "9와숫자들",
+      "sourceUrl": "https://www.indiego.co.kr/events/1870-%EC%83%81%EC%83%81-and-the-numbers",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794554724171-d5v6xp-medium.webp"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "Our Season : Stay",
+      "startsAt": "2026-12-31T20:00",
+      "advancePrice": 66000,
+      "doorPrice": null,
+      "lineup": "닐로",
+      "sourceUrl": "https://www.indiego.co.kr/events/1823-our-season-stay",
+      "sourceName": "Indiego",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794266288823-j82njs-medium.webp"
+    }
+  ],
+  "posterUpdates": [
+    {
+      "venue": "언플러그드 라운지",
+      "title": "1, 2, 3!",
+      "startsAt": "2026-11-22T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/763a2007-c0a0-4582-b863-eda9d77b9d41/1793795289308-rk3ir-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "2xFE : Korea Showcase",
+      "startsAt": "2026-11-23T19:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793140905448-mi7m5-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "계절집 #3 - 가을을 떠나보내며",
+      "startsAt": "2026-11-23T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793953370780-ke2za-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "11월 4주차 어썸나이트!",
+      "startsAt": "2026-11-24T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793431952761-07m4el-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "아지트 12번지",
+      "startsAt": "2026-11-25T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793867475606-z83zwf-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "항해",
+      "startsAt": "2026-11-26T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793633677980-jtfnpo-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "Biuret 4 Seasons : Winter",
+      "startsAt": "2026-11-27T20:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1792685285730-4xg1p-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "LIVE CATHARSIS",
+      "startsAt": "2026-11-28T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794044020676-a0vklp-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "아지트 13번지",
+      "startsAt": "2026-12-02T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794555392597-11ze0t-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "항해",
+      "startsAt": "2026-12-03T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1795219526326-bo7doi-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "언플러그드 라운지",
+      "title": "Our Film",
+      "startsAt": "2026-12-04T19:30",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794695244615-b4mz8k-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "S,LO,W SERIES. 03",
+      "startsAt": "2026-12-04T20:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794403698481-zbryds-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "RODFEST7",
+      "startsAt": "2026-12-05T17:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/c7925b1d-9be8-42ca-a22f-a3fef2bedc7c/1794065796517-nmo9ob-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "ChRocktikal The 1st World Tour [CRTK : The End of Beginning] in Seoul",
+      "startsAt": "2026-12-06T17:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793313057205-az7rak-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "천진우와 구토유발자들 연말 단독공연 : 크리스마스야, 미안해",
+      "startsAt": "2026-12-19T17:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1794873154473-ss5yf-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "Nothing’s Carved In Stone 'ONE MAN LIVE' IN KOREA",
+      "startsAt": "2026-12-20T18:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793312977103-wy03r-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    },
+    {
+      "venue": "롤링홀",
+      "title": "초록불꽃소년단 연말 단독 콘서트 : Dive Or Die",
+      "startsAt": "2026-12-26T18:00",
+      "posterUrl": "https://hasniugmmldebxwzulig.supabase.co/storage/v1/object/public/event-images/f55fb01b-cf67-4ecc-9ffc-2767cee88ee1/1793686011993-wizzvh-medium.webp",
+      "posterSourceUrl": "https://www.indiego.co.kr/concerts/hongdae"
+    }
+  ]
+}
