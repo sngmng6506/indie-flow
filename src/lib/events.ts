@@ -41,9 +41,23 @@ export function publicEvent(e: any, origin = hongdae) {
   return {
     id: String(e.id), title:e.title, startsAt:e.starts_at, venue:{id:String(e.venue_id),name:e.venue_name},
     walkMinutes:hasLocation?walkMinutes(origin,{lat:Number(e.lat),lng:Number(e.lng)}):null,
-    summary:e.summary, doorPrice:e.door_price,
+    summary:e.summary, doorPrice:e.door_price??null, advancePrice:e.advance_price??null,
     poster:e.poster_approved && e.poster_url?{url:e.poster_url,alt:`${e.title} · ${e.venue_name} 포스터`}:null
   };
+}
+
+export function eventPriceLabel(event: {advancePrice: number | null;doorPrice: number | null}, en = false) {
+  if (event.advancePrice !== null) {
+    const value = Number(event.advancePrice);
+    if (value === 0) return en ? 'Free · registration required' : '무료 · 사전 신청';
+    return en ? `Advance ${value.toLocaleString('ko-KR')} KRW` : `예매 ${value.toLocaleString('ko-KR')}원`;
+  }
+  if (event.doorPrice !== null) {
+    const value = Number(event.doorPrice);
+    if (value === 0) return en ? 'Free entry' : '무료 입장';
+    return en ? `Door ${value.toLocaleString('ko-KR')} KRW` : `현장 ${value.toLocaleString('ko-KR')}원`;
+  }
+  return en ? 'Price not listed' : '가격 미공지';
 }
 
 export type WalkFilter = '10' | '15' | '20' | '30' | 'all';

@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes} from '../src/lib/events';
+import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes,eventPriceLabel} from '../src/lib/events';
 
 test('distance filtering excludes unknown distances except for all',()=>{
   const items=[{walkMinutes:5},{walkMinutes:16},{walkMinutes:null}];
@@ -38,4 +38,11 @@ test('public event hides unapproved posters and handles missing venue coordinate
 test('distance calculation is stable for same location and nearby venue',()=>{
   assert.equal(walkMinutes(hongdae,hongdae),0);
   assert.equal(resolveOrigin(String(hongdae.lat),String(hongdae.lng)).near,true);
+});
+
+test('list price prioritizes verified advance prices, including free registration',()=>{
+  assert.equal(eventPriceLabel({advancePrice:55000,doorPrice:null}),'예매 55,000원');
+  assert.equal(eventPriceLabel({advancePrice:0,doorPrice:null}),'무료 · 사전 신청');
+  assert.equal(eventPriceLabel({advancePrice:null,doorPrice:10000}),'현장 10,000원');
+  assert.equal(eventPriceLabel({advancePrice:null,doorPrice:null}),'가격 미공지');
 });
