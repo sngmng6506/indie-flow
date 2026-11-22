@@ -9,9 +9,9 @@ const text=(v:unknown)=>typeof v==='string'?v.trim():'';
 const safeUrl=(v:unknown)=>{try{const u=new URL(text(v));return u.protocol==='https:'?u.toString():'';}catch{return '';}};
 export function jsonLdBlocks(html:string):unknown[]{
   const out:unknown[]=[];
-  const re=/<script\\b([^>]*)>([\\s\\S]*?)<\\/script\\s*>/gi;
+  const re=/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
   for(const match of html.matchAll(re)){
-    if(!/\\btype\\s*=\\s*["']application\\/ld\\+json["']/i.test(match[1]))continue;
+    if(!/\btype\s*=\s*["']application\/ld\+json["']/i.test(match[1]))continue;
     try{out.push(JSON.parse(match[2]));}catch{}
   }
   return out;
@@ -35,7 +35,7 @@ function price(value:unknown):number|null{
 export function seoulLocal(value:unknown):string|null{
   const raw=text(value);
   // Accept explicit timezone offsets or UTC only. Ambiguous local times require review.
-  if(!/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:\\d{2})$/.test(raw))return null;
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})$/.test(raw))return null;
   const date=new Date(raw);
   if(Number.isNaN(date.valueOf()))return null;
   const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date);
@@ -68,7 +68,7 @@ export function extractEvents(html:string,source:{name:string;url:string;venue:s
 export function dedupe(events:Candidate[]):Candidate[]{
   const seen=new Set<string>();
   return events.filter(e=>{
-    const key=[e.venue,e.startsAt,e.title.normalize('NFKC').replace(/\\s+/g,'').toLowerCase()].join('|');
+    const key=[e.venue,e.startsAt,e.title.normalize('NFKC').replace(/\s+/g,'').toLowerCase()].join('|');
     if(seen.has(key))return false;
     seen.add(key);return true;
   });
