@@ -2,9 +2,9 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes,eventPriceLabel,offsetDate} from '../src/lib/events';
 
-test('distance filtering excludes unknown distances except for all',()=>{
+test('distance filtering keeps shows with unknown coordinates visible',()=>{
   const items=[{walkMinutes:5},{walkMinutes:16},{walkMinutes:null}];
-  assert.deepEqual(filterByWalk(items,'15'),[items[0]]);
+  assert.deepEqual(filterByWalk(items,'15'),[items[0],items[2]]);
   assert.deepEqual(filterByWalk(items,'all'),items);
 });
 test('walking filter only accepts supported values',()=>{
@@ -32,7 +32,7 @@ test('public event hides unapproved posters and handles missing venue coordinate
   const result=publicEvent(event);
   assert.equal(result.walkMinutes,null);
   assert.equal(result.poster,null);
-  assert.equal(filterByWalk([result],'15').length,0);
+  assert.equal(filterByWalk([result],'15').length,1);
   assert.equal(filterByWalk([result],'all').length,1);
 });
 test('distance calculation is stable for same location and nearby venue',()=>{

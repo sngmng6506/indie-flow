@@ -51,7 +51,7 @@ const windowLink=(start:string)=>`/?date=${start}&from=${start}&walk=${walk}&lan
       </select>
       <button class="btn" type="submit">{en?'Apply':'적용'}</button>
     </form>
-    <p class="small muted">{en?'Walking times are estimated from straight-line distances and may differ from actual routes.':'거리 시간은 직선거리로 계산한 추정치입니다. 실제 이동 시간과 다를 수 있습니다.'}</p>
+    <p class="small muted">{en?'Walking times are estimated from straight-line distances. Shows without coordinates are also displayed.':'거리 시간은 직선거리로 계산한 추정치입니다. 실제 이동 시간과 다를 수 있습니다.'}</p>
   </div>
   <p class="small muted" id="origin-message">{en?'Based on Hongik Univ. Station.':'홍대입구역을 기준으로 표시합니다.'}</p>
   <div id="events" class="cards">
@@ -101,7 +101,7 @@ const windowLink=(start:string)=>`/?date=${start}&from=${start}&walk=${walk}&lan
       card.dataset.walk=distance===null?'':String(distance);
       const text=card.querySelector<HTMLElement>('[data-distance]');
       if(text)text.textContent=distance===null?(en?'Distance unknown':'거리 정보 없음'):(en?`~${distance} min walk`:`도보 약 ${distance}분`);
-      card.hidden=distance===null?walk!=='all':distance>limit;
+      card.hidden=distance!==null&&distance>limit;
       if(!card.hidden)shown++;
     }
     if(empty)empty.hidden=shown!==0;

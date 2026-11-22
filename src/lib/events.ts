@@ -70,7 +70,7 @@ export function parseWalkFilter(value: string | null): WalkFilter {
   return value === '10' || value === '15' || value === '20' || value === '30' || value === 'all' ? value : '15';
 }
 export function filterByWalk<T extends {walkMinutes: number | null}>(events: T[], walk: WalkFilter): T[] {
-  return walk === 'all' ? events : events.filter(event => event.walkMinutes !== null && event.walkMinutes <= Number(walk));
+  return walk === 'all' ? events : events.filter(event => event.walkMinutes === null || event.walkMinutes <= Number(walk));
 }
 export function resolveOrigin(latValue: string | null, lngValue: string | null) {
   if (latValue === null || lngValue === null || latValue.trim() === '' || lngValue.trim() === '') return {origin:hongdae,near:false};
