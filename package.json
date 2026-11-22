@@ -11,7 +11,8 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "db:migrate": "node scripts/migrate.mjs",
     "collect:events": "tsx scripts/collect-events.ts",
-    "collect:export": "tsx scripts/collect-events.ts --import-json"
+    "collect:export": "tsx scripts/collect-events.ts --import-json",
+    "db:seed:verified": "node scripts/seed-verified-2026.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.4.0",
