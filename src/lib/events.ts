@@ -25,6 +25,11 @@ export async function getCounts(from: string, days = 14) {
 export function seoulDate(date = new Date()) {
   return new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
 }
+export function offsetDate(date: string, days: number) {
+  const parsed = new Date(date + 'T00:00:00Z');
+  parsed.setUTCDate(parsed.getUTCDate() + days);
+  return parsed.toISOString().slice(0, 10);
+}
 export function isDate(value: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(value + 'T00:00:00Z').valueOf())
     && new Date(value + 'T00:00:00Z').toISOString().slice(0,10) === value;

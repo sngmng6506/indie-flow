@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes,eventPriceLabel} from '../src/lib/events';
+import {filterByWalk,parseWalkFilter,resolveOrigin,hongdae,isDate,publicEvent,walkMinutes,eventPriceLabel,offsetDate} from '../src/lib/events';
 
 test('distance filtering excludes unknown distances except for all',()=>{
   const items=[{walkMinutes:5},{walkMinutes:16},{walkMinutes:null}];
@@ -45,4 +45,10 @@ test('list price prioritizes verified advance prices, including free registratio
   assert.equal(eventPriceLabel({advancePrice:0,doorPrice:null}),'무료 · 사전 신청');
   assert.equal(eventPriceLabel({advancePrice:null,doorPrice:10000}),'현장 10,000원');
   assert.equal(eventPriceLabel({advancePrice:null,doorPrice:null}),'가격 미공지');
+});
+
+test('calendar paging spans November and late December with UTC-stable days',()=>{
+  assert.equal(offsetDate('2026-11-22',14),'2026-12-06');
+  assert.equal(offsetDate('2026-12-06',14),'2026-12-20');
+  assert.equal(offsetDate('2026-12-20',-14),'2026-12-06');
 });

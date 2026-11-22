@@ -1,13 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
-import {eventPriceLabel,filterByWalk,getCounts,getEvents,isDate,parseWalkFilter,publicEvent,seoulDate,hongdae} from '../lib/events';
-const date=Astro.url.searchParams.get('date')||seoulDate();
-const selected=isDate(date)?date:seoulDate();
+import {eventPriceLabel,filterByWalk,getCounts,getEvents,isDate,offsetDate,parseWalkFilter,publicEvent,seoulDate,hongdae} from '../lib/events';
+const today=seoulDate();
+const date=Astro.url.searchParams.get('date')||today;
+const selected=isDate(date)?date:today;
 const language=Astro.url.searchParams.get('lang')==='en'?'en':'ko';
 const walk=parseWalkFilter(Astro.url.searchParams.get('walk'));
-const dateCounts=await getCounts(seoulDate(),14);
+const fromParam=Astro.url.searchParams.get('from');
+const requestedWindow=fromParam&&isDate(fromParam)&&fromParam>=today&&selected>=fromParam&&selected<offsetDate(fromParam,14)?fromParam:null;
+const windowStart=requestedWindow||(selected>today?selected:today);
+const previousStart=windowStart>today?(offsetDate(windowStart,-14)<today?today:offsetDate(windowStart,-14)):null;
+const nextStart=offsetDate(windowStart,14);
+const dateCounts=await getCounts(windowStart,14);
 const countMap=new Map(dateCounts.map(c=>[c.date,Number(c.count)]));
-const dates=Array.from({length:14},(_,i)=>{const d=new Date(seoulDate()+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10)});
+const dates=Array.from({length:14},(_,i)=>offsetDate(windowStart,i));
 const rawEvents=await getEvents(selected);
 const events=rawEvents.map(e=>publicEvent(e,hongdae));
 const visible=filterByWalk(events,walk);
@@ -17,13 +23,18 @@ const dateFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{month:'long',day:'nume
 const timeFmt=new Intl.DateTimeFormat(en?'en-US':'ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});
 const siteUrl=import.meta.env.PUBLIC_SITE_URL||import.meta.env.SITE||Astro.url.origin;
 const homepageSchema={'@context':'https://schema.org','@type':'CollectionPage',name:en?'Indie Flow — Hongdae live shows':'인디플로우 — 홍대 인디 공연',url:new URL('/',siteUrl).toString(),inLanguage:en?'en':'ko',about:{'@type':'Thing',name:'Independent live music in Hongdae, Seoul'}};
-const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`;
+const link=(d:string,w=walk)=>`/?date=${d}&from=${windowStart}&walk=${w}&lang=${language}`;
+const windowLink=(start:string)=>`/?date=${start}&from=${start}&walk=${walk}&lang=${language}`;
 ---
 <Base title={en?'Live indie shows near Hongdae':'오늘의 인디 공연'} description={en?'Discover upcoming independent live music performances near Hongdae, Hapjeong and Sangsu in Seoul. Browse dates, venues and ticket prices.':'홍대·합정·상수·연남·망원·신촌의 인디 공연 일정과 입장료, 공연장 위치를 확인하세요.'} lang={language}>
   <script type="application/ld+json" set:html={JSON.stringify(homepageSchema).replace(/</g,'\\u003c')}/>
   <h1 class="hero">{en?'Live indie shows near you':'오늘 걸어갈 수 있는 공연'}</h1>
   <nav class="date-strip" aria-label={en?'Choose a date':'날짜 선택'}>
     {dates.map(d=><a href={link(d)} aria-current={selected===d?'date':undefined}><span class="small">{dateFmt.format(new Date(d+'T12:00:00Z')).split(' ')[0]}</span><strong>{Number(d.slice(-2))}</strong><span class="small">{countMap.get(d)||0}{en?' shows':'개'}</span></a>)}
+  </nav>
+  <nav class="date-pages" aria-label={en?'Browse more weeks':'다른 주 공연 보기'}>
+    {previousStart&&<a href={windowLink(previousStart)}>{en?'← Previous 2 weeks':'← 이전 2주'}</a>}
+    <a href={windowLink(nextStart)}>{en?'Next 2 weeks →':'다음 2주 →'}</a>
   </nav>
   <div class="locator">
     <button id="show-settings" type="button" aria-expanded="false" aria-controls="settings">{en?'Hongik Univ. Station':'홍대입구역'} · {walk==='all'?(en?'All distances':'거리 상관없이 전체'): (en?`Within ~${walk} min walk`:`도보 약 ${walk}분 이내`)} ▾</button>
@@ -32,6 +43,7 @@ const link=(d:string,w=walk)=>`/?date=${d}&walk=${w}&lang=${language}`;
   <div id="settings" class="sheet" hidden>
     <form method="GET" action="/">
       <input type="hidden" name="date" value={selected}/>
+      <input type="hidden" name="from" value={windowStart}/>
       <input type="hidden" name="lang" value={language}/>
       <label for="walk">{en?'Walking distance':'걷는 시간'}</label>
       <select id="walk" name="walk">
